@@ -260,56 +260,20 @@ ol.events li{margin:0 0 6px}
 
   <div class="abstract">
     <h2>Abstract</h2>
-    <p>I got into trading the way a lot of people my age did, through YouTube: payout screenshots, funded-account certificates and the promise that an $80 evaluation is the first step to a trading career. Vest Capital, a new prop firm on the Vest Markets exchange, sells exactly that product, where the buyer pays a fee, trades a simulated account and is paid a share of further profit in real cash once the account reaches its target. After buying some myself, I started treating the evaluation as a financial contract, which has the payoff of a barrier option on the account's simulated profit and can be valued and hedged the same way.</p>
-    <p>Valued that way, the $10,000 evaluation is worth <strong>$180 to a trader with no skill against an $80 fee</strong>, because a coin flip passes it 37.5% of the time while the fee only breaks even at a pass rate of about 22%. Vest's pricing relies on most customers losing to costs and over-trading, which leaves a gap for a buyer who trades mechanically, and the same gap appears in 52 of the 57 evaluations on sale.</p>
-    <p>Turning that expected value into a strategy meant managing variance, cost and capital. The fee is lost 62.5% of the time, so I hedge with real money on Hyperliquid at the account's real-money delta, which is 0.30 of the position during the evaluation and 0.80 once funded. Costs decide the market and the order type: the strategy trades the Nasdaq 100 with limit orders wherever possible, ahead of Bitcoin, which trades continuously but costs more, and gold, where Hyperliquid's fee is ten times higher. Capital decides the portfolio, which is built to maximise return on capital, with accounts staggered and alternated so that they behave as independent positions. Finding a mispriced opportunity and managing its risk is what a hedge fund does, so this paper is, half seriously, the business plan for a very small one, capped by Vest at ten accounts.</p>
-    <p>Vest Capital is new, so only about three months of prices exist, and on that sample, with every fee and rule included, about half of the $100 theoretical profit survives. The sized hedge earns $50 per account and loses money on 10% of accounts, compared with $25 and an 83% loss rate for normal trading. A portfolio of these accounts returns <strong>about 11% a month on capital</strong> from $5,000 to $150,000, and Vest's limit of ten funded accounts caps it near $24,000 a month. The strategy was profitable in all four periods tested. In a holdout period recorded after the strategy was fixed (29 October to 10 November 2026), more than twice as volatile as the training data, it earned $63 per account with market orders, against $41 to $48 in the earlier periods, and a forward test on new prices, updated daily, now tracks the strategy as it would have run since that date (Figure S1). The main untested risk is the speed of hedge execution with live orders.</p>
+    <p>I came to prop-firm evaluations the way many people my age did, through YouTube, where payout screenshots and funded-account certificates present an $80 evaluation as the first step to a trading career, and it was only after buying a few myself that the fine print, a profit target, a loss limit and a fee, began to look less like a test of skill and more like a financial contract that could be valued like any other. Vest Capital, a new prop firm on the Vest Markets exchange, sells exactly this product, and once its $10,000 evaluation is priced as the double-barrier digital option it really is, the $80 fee turns out to buy about <strong>$180 of value for a trader with no skill whatsoever</strong>, which makes it one of the rare places in finance where knowing nothing about markets is enough to come out ahead.</p>
+    <p>Vest is not being careless, because the price is set for the customers it actually has, and with industry pass rates of 5 to 14 percent against the 22 percent Vest needs to break even, it prices the evaluation much as a gym prices a membership, on the safe expectation that most buyers will not get their money's worth. The gap is therefore open only to a buyer who trades mechanically and hedges what is left, and the hedge is where the obvious answer fails: since most of the $82,000 position is simulated money, the right hedge on Hyperliquid is about 30 cents per dollar of position during the evaluation and 80 cents once funded, the same reasoning a bank applies when it hedges a mortgage book by its sensitivity to interest rates and not by its face value.</p>
+    <p>Vest is new, so only about three months of prices exist, but on that sample, with every fee and rule included, about half of the theoretical value survives, which comes to roughly $50 per account and <strong>about 11 percent a month on the capital tied up</strong>, until Vest's limit of ten funded accounts caps the strategy near $24,000 a month. The result held in every period tested, including a holdout recorded after the design was fixed, and a forward test that updates daily now tracks the strategy as it would have run since then, leaving the speed of hedge execution with real orders as the main risk still to be tested. Finding a mispriced opportunity and managing its risk is, after all, what a hedge fund does; this one simply happens to be very small, run by a student and capped by the firm that sells the product.</p>
   </div>
+
+  <h2>How Has It Performed Since the Design Was Fixed?</h2>
+  <p id="hold-text"></p>
   <figure>
-    <p class="ft">Figure S1. Forward test since the strategy was fixed: cumulative real profit, hedged and unhedged</p>
+    <p class="ft">Figure S1. Cumulative real profit since 29 October 2026, the same accounts with and without the hedge</p>
     <p class="kicker" id="hold-upd"></p>
-    <div class="tiles" id="hold-tiles"></div>
     <div class="legend" id="lg-hold"></div>
     <div class="chart" id="c-hold"></div>
     <figcaption id="hold-note"></figcaption>
   </figure>
-  <figure>
-    <p class="ft">Figure S2. How the book runs: every hedged account since the strategy was fixed</p>
-    <div class="legend" id="lg-book"></div>
-    <div class="chart" id="c-book"></div>
-    <figcaption><b>Note:</b> Each row is one of eight staggered account slots, and each bar is one account, opened as the previous account in its slot closes and labelled L or S for its direction, which alternates from one account to the next. Staggered starts and alternating directions keep the accounts independent, so the book behaves as many small positions and never as one large bet. Same accounts as Figure S1; open dates are approximate.</figcaption>
-  </figure>
-  <figure>
-    <p class="ft">Figure S3. Scenario explorer: how the account, position size and order type change the result</p>
-    <div class="ctrls ex" id="ex-ctrls"></div>
-    <div class="tiles" id="ex-tiles"></div>
-    <figcaption id="ex-note"></figcaption>
-  </figure>
-  <div class="tbl">
-    <p class="tt">Table S3. What moves the result</p>
-    <table>
-      <thead><tr><th class="l">Choice</th><th class="l">Options tested</th><th class="l">Effect</th><th class="l">Chosen</th></tr></thead>
-      <tbody>
-        <tr><td>Market</td><td class="l w">Nasdaq 100, Bitcoin, S&amp;P 500, gold</td><td class="l w">$64, $60, $53 and −$4 per account; gold's Hyperliquid fee is ten times higher</td><td class="l">Nasdaq 100</td></tr>
-        <tr><td>Order type</td><td class="l w">Limit, mixed, market</td><td class="l w">$77, $50 and $37 per account</td><td class="l">Mixed, post-only entries</td></tr>
-        <tr><td>Hedge size</td><td class="l w">50% to 125% of the theoretical ratio</td><td class="l w">Fewest losing accounts at 75% (9%); 50% earns most, 14.4% a month, but 55% of accounts lose</td><td class="l">75%</td></tr>
-        <tr><td>Payout rule</td><td class="l w">Claim at $300 or $600 of funded profit</td><td class="l w">11.4% against 10.2% a month on capital</td><td class="l">$300</td></tr>
-        <tr><td>Hedge leverage</td><td class="l w">10× or 20×</td><td class="l w">6.5% against 11.4% a month on capital</td><td class="l">20×</td></tr>
-        <tr><td>Intraday sizing</td><td class="l w">Fixed, risk budget, time of day</td><td class="l w">+$3.6 and −$13.8 per account against fixed size</td><td class="l">Fixed in the headline results; risk budget live</td></tr>
-      </tbody>
-    </table>
-    <p class="note"><b>Note:</b> Each row changes one choice from the baseline. Sources: market, Section 6.4; order type, Section 6.2; hedge size, Section 8.5; payout rule and leverage, the refined configurations of Section 7.1; sizing, Section 6.7.</p>
-  </div>
-  <div class="tbl">
-    <p class="tt">Table S1. Baseline strategy</p>
-    <table id="tbl-plan"></table>
-    <p class="note"><b>Note:</b> 5,000 simulated account lives, mixed execution. Details in Section 7.2.</p>
-  </div>
-  <div class="tbl">
-    <p class="tt">Table S2. Optimal portfolio by deployed capital</p>
-    <table id="tbl-front"></table>
-    <p class="note"><b>Note:</b> Loss limit of 25% per account. The range is the 5th to 95th percentile of monthly profit. Details in Section 7.3.</p>
-  </div>
 
   <h2>Contents</h2>
   <ol class="toc">
@@ -1220,20 +1184,35 @@ ol.events li{margin:0 0 6px}
   <p>Table 13 lists the efficient set for the $10,000 evaluation, which is concentrated at 0.75 times the theoretical hedge. Moving along the set trades the time an account takes against its chance of losing money, since larger positions close faster and earn more per dollar of capital at a slightly higher loss rate, and although half the theoretical hedge reaches about 14% a month, more than half of those accounts lose money.</p>
 
   <h2>7.2 What Is the Baseline Account?</h2>
-  <p>The baseline account, which forms the building block of every optimal portfolio up to $25,000 (Section 7.3), is the $10,000 one-step evaluation with the settings in Table 14.</p>
+  <p>The baseline account, which forms the building block of every optimal portfolio up to $25,000 (Section 7.3), is the $10,000 one-step evaluation with the settings in Table 14, and Table 15 shows how each of those settings was chosen against the alternatives tested.</p>
   <div class="tbl">
     <p class="tt">Table 14. Baseline strategy specification and performance</p>
     <table id="tbl-plan2"></table>
     <p class="note"><b>Note:</b> Performance from 5,000 account lives under mixed execution unless stated.</p>
+  </div>
+  <div class="tbl">
+    <p class="tt">Table 15. How the baseline was chosen</p>
+    <table>
+      <thead><tr><th class="l">Choice</th><th class="l">Options tested</th><th class="l">Effect</th><th class="l">Chosen</th></tr></thead>
+      <tbody>
+        <tr><td>Market</td><td class="l w">Nasdaq 100, Bitcoin, S&amp;P 500, gold</td><td class="l w">$64, $60, $53 and −$4 per account; gold's Hyperliquid fee is ten times higher</td><td class="l">Nasdaq 100</td></tr>
+        <tr><td>Order type</td><td class="l w">Limit, mixed, market</td><td class="l w">$77, $50 and $37 per account</td><td class="l">Mixed, post-only entries</td></tr>
+        <tr><td>Hedge size</td><td class="l w">50% to 125% of the theoretical ratio</td><td class="l w">Fewest losing accounts at 75% (9%); 50% earns most, 14.4% a month, but 55% of accounts lose</td><td class="l">75%</td></tr>
+        <tr><td>Payout rule</td><td class="l w">Claim at $300 or $600 of funded profit</td><td class="l w">11.4% against 10.2% a month on capital</td><td class="l">$300</td></tr>
+        <tr><td>Hedge leverage</td><td class="l w">10× or 20×</td><td class="l w">6.5% against 11.4% a month on capital</td><td class="l">20×</td></tr>
+        <tr><td>Intraday sizing</td><td class="l w">Fixed, risk budget, time of day</td><td class="l w">+$3.6 and −$13.8 per account against fixed size</td><td class="l">Fixed in the headline results; risk budget live</td></tr>
+      </tbody>
+    </table>
+    <p class="note"><b>Note:</b> Each row changes one choice from the baseline. Sources: market, Section 6.4; order type, Section 6.2; hedge size, Section 8.5; payout rule and leverage, the refined configurations of Section 7.1; sizing, Section 6.7.</p>
   </div>
   <p>Choosing by return on capital matters, because the more obvious objectives select much worse strategies. Maximising the probability of passing selects a small position that takes about a month to close, and maximising profit per account selects the $50,000 evaluation, which needs about $15,000 of capital, so both end up returning less than 2% a month on capital against 11% for the baseline.</p>
 
   <h2>7.3 How Many Accounts, and Which?</h2>
   <p>Combining configurations into a portfolio turns per-account results into a monthly return for a given budget. Since an investor can hold several evaluations at once, up to ten funded, for a capital budget \(B\) and a loss limit \(\bar{p}\) I choose integer holdings \(n_k\) of each eligible configuration \(k\) to solve</p>
   <div class="math">\[ \begin{aligned} \max_{\{n_k\}} \quad & \sum_{k} n_k\,\pi_k \\ \text{subject to} \quad & \sum_{k} n_k K_k \le B, \\ & \sum_{k} n_k \le 10, \quad n_k \in \mathbb{Z}_{\ge 0}, \end{aligned} \tag{11} \]</div>
-  <p class="where">where \(\pi_k\) is expected real profit per trading day, \(K_k\) is deployed capital and eligible configurations satisfy \(P(\text{loss}) \le \bar{p}\). Each solution is then simulated over a 21-trading-day month, and Table 15 reports the result for each budget and loss limit.</p>
+  <p class="where">where \(\pi_k\) is expected real profit per trading day, \(K_k\) is deployed capital and eligible configurations satisfy \(P(\text{loss}) \le \bar{p}\). Each solution is then simulated over a 21-trading-day month, and Table 16 reports the result for each budget and loss limit.</p>
   <div class="tbl">
-    <p class="tt">Table 15. Expected monthly profit of the optimal portfolio</p>
+    <p class="tt">Table 16. Expected monthly profit of the optimal portfolio</p>
     <table id="tbl-surface"></table>
     <p class="note"><b>Note:</b> Columns are the loss limit, the highest allowed share of accounts that end with a real loss. Each cell gives expected monthly profit, with return on capital and number of accounts below. No configuration meets a 5% limit. Mixed execution.</p>
   </div>
@@ -1248,17 +1227,17 @@ ol.events li{margin:0 0 6px}
     <figcaption><b>Note:</b> Expected monthly profit of the optimal portfolio from equation (11), by capital (log scale) and loss limit. Source: simulated, mixed execution.</figcaption>
   </figure>
 
-  <p>The optimal portfolio earns about 11% a month across a wide range of budgets and loss limits. The solution barely changes between loss limits of 10% and 25%, because few efficient configurations fall in that range, and while no configuration meets a 5% limit, a 60% limit admits half-hedged configurations that reach about 13% a month but produce losing months at small budgets. Return on capital stays close to 11% up to $150,000, beyond which <strong>capacity is set by the ten-account limit</strong>: above about $25,000 the limit forces larger evaluations into the portfolio, and at $250,000 the portfolio consists of ten of the largest evaluation, returning 9.7% a month. Figure 25 shows expected monthly profit by capital at a 25% loss limit, Figure 26 shows it across loss limits, and Table 16 lists the accounts held at each budget.</p>
+  <p>The optimal portfolio earns about 11% a month across a wide range of budgets and loss limits. The solution barely changes between loss limits of 10% and 25%, because few efficient configurations fall in that range, and while no configuration meets a 5% limit, a 60% limit admits half-hedged configurations that reach about 13% a month but produce losing months at small budgets. Return on capital stays close to 11% up to $150,000, beyond which <strong>capacity is set by the ten-account limit</strong>: above about $25,000 the limit forces larger evaluations into the portfolio, and at $250,000 the portfolio consists of ten of the largest evaluation, returning 9.7% a month. Figure 25 shows expected monthly profit by capital at a 25% loss limit, Figure 26 shows it across loss limits, and Table 17 lists the accounts held at each budget.</p>
   <div class="tbl">
-    <p class="tt">Table 16. Optimal portfolio at a 25% loss limit</p>
+    <p class="tt">Table 17. Optimal portfolio at a 25% loss limit</p>
     <table id="tbl-book"></table>
     <p class="note"><b>Note:</b> Monthly ranges assume independent accounts, opened at different times and in alternating directions. Accounts opened together in the same direction behave as one position: in a four-account test the standard deviation of profit was $331 for same-direction accounts against $195 for alternating ones. Vest's terms restrict misuse of multiple accounts.</p>
   </div>
 
   <h2>7.4 How Much Capital Should Be Committed?</h2>
-  <p>Expected value shows whether a bet is worth taking but not how much to put behind it, and the Kelly criterion (Kelly, 1956) answers the second question by giving the stake that maximises the long-run growth of wealth, where wealth here means the investor's real capital and never the simulated balance. Table 17 shows the real capital each strategy requires per account at half-Kelly.</p>
+  <p>Expected value shows whether a bet is worth taking but not how much to put behind it, and the Kelly criterion (Kelly, 1956) answers the second question by giving the stake that maximises the long-run growth of wealth, where wealth here means the investor's real capital and never the simulated balance. Table 18 shows the real capital each strategy requires per account at half-Kelly.</p>
   <div class="tbl">
-    <p class="tt">Table 17. Real capital needed per account at half-Kelly</p>
+    <p class="tt">Table 18. Real capital needed per account at half-Kelly</p>
     <table>
       <thead><tr><th class="l">Strategy</th><th>Real capital per account</th><th>Accounts per $10,000</th></tr></thead>
       <tbody>
@@ -1280,7 +1259,7 @@ ol.events li{margin:0 0 6px}
   <h1>8. Does It Hold Out of Sample?</h1>
   <p><strong>The result holds in every out-of-sample test, including a holdout and a forward test on prices recorded after the strategy was fixed.</strong> It avoids the three mistakes behind most too-good-to-be-true trading results, a strategy fitted to past prices, prices that were never tradeable and costs that were left out, because the value comes from the contract terms, the prices match my own fills and every measured cost is charged. Since Vest is new and the sample is therefore short, the checks that follow are designed around exactly that weakness, running from a forward test that updates daily and the strategy run in calendar order to separate time periods, adverse scenarios, sensitivity to the main settings and formal tests for overfitting.</p>
   <h2>8.1 Has It Worked Since the Design Was Fixed?</h2>
-  <p>The most direct evidence is the forward test at the top of this paper (Figures S1 and S2), which runs accounts back to back on prices recorded since 29 October 2026, the day after the strategy was fixed, and updates every day. Because its counts change as accounts close, they are reported there and nowhere else, and what matters for this section is the shape of the result, a hedged book that climbs in small steps while the same accounts without the hedge swing between lost fees and occasional large payouts.</p>
+  <p>The most direct evidence is the forward test at the top of this paper (Figure S1), which runs accounts back to back on prices recorded since 29 October 2026, the day after the strategy was fixed, and updates every day. Because its counts change as accounts close, they are reported there and nowhere else, and what matters for this section is the shape of the result, a hedged book that climbs in small steps while the same accounts without the hedge swing between lost fees and occasional large payouts.</p>
   <h2>8.2 Does It Hold When Run in Calendar Order?</h2>
   <p>The earlier results come from reshuffled trading days, which measure what a typical account earns but not what running the strategy day after day would look like, so here the accounts run back to back on the actual price history in calendar order. Each account starts on a real trading day and runs until it closes, the next account starts on the following day with the opposite direction, and eight such account slots were run, each starting on a different day.</p>
   <figure>
@@ -1290,11 +1269,11 @@ ol.events li{margin:0 0 6px}
     <figcaption><b>Note:</b> Each line is one slot running about 19 accounts back to back, 30 July to 28 October 2026. Baseline strategy, mixed execution, all costs. Teal: hedged. Orange: the same accounts without a hedge.</figcaption>
   </figure>
   <div class="tbl">
-    <p class="tt">Table 18. Eight account slots run in time order</p>
+    <p class="tt">Table 19. Eight account slots run in time order</p>
     <table id="tbl-seq"></table>
     <p class="note"><b>Note:</b> Drawdown is the largest fall from a previous high in cumulative profit. Source: as Figure 27.</p>
   </div>
-  <p><strong>Every hedged slot made money, and none fell more than $47 from its high,</strong> while the same accounts without the hedge ended anywhere between a loss of $1,365 and a gain of $984. The same stability explains why return on capital stays steady across budgets in Section 7.3, because each hedged account is a small, short position with little variation in outcome, so adding accounts adds profit in proportion until the ten-account limit binds. Table 18 summarises the eight slots.</p>
+  <p><strong>Every hedged slot made money, and none fell more than $47 from its high,</strong> while the same accounts without the hedge ended anywhere between a loss of $1,365 and a gain of $984. The same stability explains why return on capital stays steady across budgets in Section 7.3, because each hedged account is a small, short position with little variation in outcome, so adding accounts adds profit in proportion until the ten-account limit binds. Table 19 summarises the eight slots.</p>
 
   <h2>8.3 Does It Hold in Every Period?</h2>
   <p>The hedged strategy made money in every period tested, including one recorded after the strategy was fixed. The sample is split into training, validation and test periods plus that holdout, with each period resampled only from its own trading days, and with market orders the hedged strategy earned $41 to $63 per account in all four periods while the unhedged account ranged from −$53 to +$121, a result that held even though the holdout was more than twice as volatile as the training period. Figure 28 shows each period.</p>
@@ -1307,11 +1286,11 @@ ol.events li{margin:0 0 6px}
 
   <h2>8.4 What Would Break It?</h2>
   <div class="tbl">
-    <p class="tt">Table 19. Real profit per account under adverse scenarios</p>
+    <p class="tt">Table 20. Real profit per account under adverse scenarios</p>
     <table id="tbl-stress"></table>
     <p class="note"><b>Note:</b> Each scenario modifies one input from the baseline (market orders, all measured costs). 2,000 account lives per scenario.</p>
   </div>
-  <p>Only failures in hedge execution turn the result negative. Of the twelve scenarios tested, the two that produce negative expected profit are execution costs at three times the measured level and 20 basis points of slippage on every hedge event, and <strong>both concern the speed and cost of hedge execution</strong>, whereas price gaps, a widening gap between the exchanges and price spikes on one exchange each reduce profit by only a few dollars per account. Table 19 lists all twelve scenarios.</p>
+  <p>Only failures in hedge execution turn the result negative. Of the twelve scenarios tested, the two that produce negative expected profit are execution costs at three times the measured level and 20 basis points of slippage on every hedge event, and <strong>both concern the speed and cost of hedge execution</strong>, whereas price gaps, a widening gap between the exchanges and price spikes on one exchange each reduce profit by only a few dollars per account. Table 20 lists all twelve scenarios.</p>
 
   <h2>8.5 How Sensitive Is It to the Main Settings?</h2>
   <p>The baseline sits in a stable region of the parameter space, as Figure 29 shows by mapping return on capital and the share of losing accounts across every combination of position size and hedge size on the $10,000 evaluation: return rises with position size, while the loss rate is lowest near 75% of the theoretical hedge at every size.</p>
@@ -2367,7 +2346,11 @@ function drawHold(){const S=D.seq_hold,host=$('#c-hold');if(!S||!host)return;
   const lastClose=new Date(Math.max(...acc('hedged').map(p=>p[0]))).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});
   const upd=S.updated_utc?new Date(S.updated_utc.replace(' ','T')+'Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}):lastClose;
   if($('#hold-upd'))$('#hold-upd').textContent='Last updated '+upd+'. Prices through '+(S.data_through?new Date(S.data_through.replace(' ','T')+'Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',timeZone:'UTC'}):lastClose)+'.';
-  if($('#hold-note'))$('#hold-note').innerHTML=`<b>Note:</b> Accounts opened from 29 October 2026, the day after the strategy was fixed, and run back to back in time order on prices recorded since, with no resampling; eight staggered account slots, baseline strategy, mixed execution, all costs. Both lines use the same accounts, the same fixed $82,173 position and the same rules; the only difference is the Hyperliquid hedge. So far ${n} accounts have closed, the latest on ${lastClose}: ${hw} of ${n} made money with the hedge, against ${uw} of ${n} without it. Accounts still open are added when they close, and the chart updates daily. <span class="src">Source: Section 8.1 method applied to hourly Vest and Hyperliquid prices.</span>`;
+  {const book=k=>{const m=new Map();S.curves[k].flat().forEach(p=>m.set(p[0],(m.get(p[0])||0)+p[2]));let e=0;return [...m.entries()].sort((a,b)=>a[0]-b[0]).map(([t,v])=>e+=v)};
+   const hb=book('hedged'),ub=book('unhedged'),hT=hb[hb.length-1]||0,uT=ub[ub.length-1]||0,uMin=Math.min(0,...ub),uMax=Math.max(0,...ub);
+   const tail=uT>hT?' For now the unhedged balance sits higher, which is exactly what a lottery looks like in the week it pays out; the hedged line is the one that can be relied on month after month.':' The hedged balance also sits higher for now, but the more important difference is how much smoother its path has been.';
+   if($('#hold-text'))$('#hold-text').innerHTML=`Since 29 October 2026, the day after the strategy was fixed, ${n} accounts have opened and closed on prices recorded after the fact, which makes this the closest thing to a live track record the strategy has without real money on the Hyperliquid side. With the hedge, ${hw} of those ${n} accounts made money and the combined balance has climbed in small steps to ${money(hT)}, whereas the same accounts without the hedge made money only ${uw} times and lost the $80 fee on the rest, so their balance fell as low as ${money(uMin)} and rose as high as ${money(uMax)} before settling at ${money(uT)}, a path set almost entirely by the few accounts that happened to pass.${tail}`;}
+  if($('#hold-note'))$('#hold-note').innerHTML=`<b>Note:</b> Accounts run back to back in time order on hourly Vest and Hyperliquid prices recorded since 29 October 2026, with no resampling, using the baseline strategy and all costs. Both lines use the same accounts, the same fixed position and the same rules, so the only difference between them is the Hyperliquid hedge. Accounts still open are added when they close, and the chart updates daily (Section 8.1).`;
 }
 function drawSeq(){const S=D.seq,host=$('#c-seq');if(!S||!host)return;
   legend('#lg-seq',[[C2,'Hedged (8 slots)','ln'],[C1,'No hedge, same accounts','ln']]);
@@ -2402,7 +2385,7 @@ function stopTable(){const S=D.intra&&D.intra.stops;if(!S||!$('#tbl-stop'))retur
 
 /* ---------- Router ---------- */
 const pages=[...document.querySelectorAll('.page')];const ids=pages.map(p=>p.id.slice(2));
-const draws={home:[holdTiles,drawHold,drawBook,drawExplorer],setting:[drawPrices],introduction:[],data:[drawCov,drawAnat],questions:[],value:[simDraw,drawAcc],persist:[drawSkill],hedging:[drawPrices,drawBranch,drawSweep,drawSkill2,draw3dSkill],results:[drawCmp,drawLadder,drawVolH,drawBasH],capital:[drawPareto,drawEff,drawSurface,draw3dPort],robustness:[drawSeq,drawChrono,drawHeat],conclusion:[],model:[],design:[],stats:[drawCal,drawTornado],studies:[],sources:[]};
+const draws={home:[drawHold],setting:[drawPrices],introduction:[],data:[drawCov,drawAnat],questions:[],value:[simDraw,drawAcc],persist:[drawSkill],hedging:[drawPrices,drawBranch,drawSweep,drawSkill2,draw3dSkill],results:[drawCmp,drawLadder,drawVolH,drawBasH],capital:[drawPareto,drawEff,drawSurface,draw3dPort],robustness:[drawSeq,drawChrono,drawHeat],conclusion:[],model:[],design:[],stats:[drawCal,drawTornado],studies:[],sources:[]};
 planTables();appendixTables();solTables();frontTable();cmpTable();seqTable();stopTable();stackTables();
 const tocItems=pages.map(p=>{const id=p.id.slice(2);const subs=[...p.querySelectorAll('h2')].filter(h=>!h.closest('.abstract')&&h.textContent.trim()!=='Contents').map((h,k)=>{if(!h.id)h.id=id+'-s'+k;return {hid:h.id,t:h.textContent.trim()}});
   const t=id==='home'?'Abstract':p.dataset.title;return {id,t,subs:[]}});
