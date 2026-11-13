@@ -438,9 +438,9 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-value" data-title="2. Is the Evaluation Mispriced?" hidden>
   <h1>2. Is the Evaluation Mispriced?</h1>
-  <p><strong>Yes: valued as a contract, the $10,000 evaluation is worth about $180 to a trader with no skill, more than twice its $80 fee.</strong> The evaluation is sold as a test of trading ability, but its terms describe something an options desk would recognise at once, a payout that depends only on which of two levels the account reaches first, and a payout of that kind can be priced exactly. The terms come first, then the two stages of the account are priced in turn, and the same gap turns out to run across almost all of Vest's range.</p>
-  <h2>2.1 Contract Terms</h2>
-  <p>Table 1 sets out the terms, taken from Vest Capital's documentation and purchase form between 28 and 31 October 2026. These terms define every input the valuation needs: the fee, the two limits, the profit share and the account caps.</p>
+  <p><strong>Valued as a contract, the $10,000 evaluation is worth about $180 to a trader with no skill, more than twice its $80 fee.</strong> Although the evaluation is sold as a test of trading ability, its terms describe something an options desk would recognise at once, namely a payout that depends only on which of two levels the account reaches first, and because a payout of that kind can be priced exactly, this section sets out the terms, prices the two stages of the account in turn and shows that the same gap runs across almost all of Vest's range.</p>
+  <h2>2.1 What Does the Contract Say?</h2>
+  <p>The terms in Table 1, taken from Vest Capital's documentation and purchase form between 28 and 31 October 2026, contain every input the valuation needs, from the fee and the two loss limits to the profit share and the caps on how many accounts one person may hold.</p>
   <div class="tbl">
     <p class="tt">Table 1. Evaluation terms</p>
     <table>
@@ -458,10 +458,10 @@ ol.events li{margin:0 0 6px}
     </table>
     <p class="note"><b>Note:</b> Source: Vest Capital documentation, terms and purchase form, 28–31 October 2026.</p>
   </div>
-  <p>Account names encode these terms. For example, "1-Step 10k 10% DLL3 80%" is a one-step evaluation on a $10,000 balance with a 10% target, a 3% daily loss limit and an 80% profit share. This account is the running example throughout, with fee \(F = \$80\), loss limit \(D = \$600\), profit target \(G = \$1{,}000\) and profit share \(s = 0.80\).</p>
+  <p>Each account's name encodes these terms, so that "1-Step 10k 10% DLL3 80%" describes a one-step evaluation on a $10,000 balance with a 10% profit target, a 3% daily loss limit and an 80% profit share. This account serves as the running example throughout the paper, with a fee of \(F = \$80\), a loss limit of \(D = \$600\), a profit target of \(G = \$1{,}000\) and a profit share of \(s = 0.80\).</p>
 
-  <h2>2.2 Account Lifecycle</h2>
-  <p>Each account passes through two stages with different payoffs. The evaluation stage ends at one of two limits: the account passes at \(+G\) and becomes funded, or it fails at \(-D\) and closes. Its payoff is therefore all-or-nothing. The funded stage pays \(s\) of any profit withdrawn as a stream of cash, until the balance falls \(D\) below its starting level and the account closes permanently. Because the two payoffs differ, the hedge ratio changes at funding (Section 4). Figure 2 shows the lifecycle.</p>
+  <h2>2.2 How Does an Account Progress?</h2>
+  <p>An account passes through two stages whose payoffs differ in kind, and that difference shapes both the valuation and the hedge. The evaluation stage ends at one of two limits, with the account either passing at \(+G\) and becoming funded or failing at \(-D\) and closing, so its payoff is all-or-nothing, whereas the funded stage that follows pays \(s\) of any profit withdrawn as a stream of cash until the balance falls \(D\) below its starting level and the account closes for good. Because the two stages pay out so differently, the hedge ratio changes at the moment of funding (Section 4), and Figure 2 traces the full lifecycle.</p>
   <figure>
     <p class="ft">Figure 2. Account lifecycle and hedge ratio by stage</p>
     <div class="chart dia dia-narrow">
@@ -524,10 +524,10 @@ ol.events li{margin:0 0 6px}
 
 
 
-  <h2>2.3 Real and Simulated Cash Flows</h2>
-  <p>Only three flows connect the strategy to real money, because every balance inside the account is simulated:</p>
+  <h2>2.3 Where Does Real Money Change Hands?</h2>
+  <p>Since every balance inside the account is simulated, real money enters or leaves the strategy through only three channels, namely the fee paid to Vest, the payouts received from Vest and the profit or loss on the Hyperliquid hedge:</p>
   <div class="math">\[ \Pi = \Pi_{\text{hedge}} + C - F - c_{\text{hedge}} - f_{\text{hedge}} \tag{1} \]</div>
-  <p class="where">where \(\Pi_{\text{hedge}}\) is the profit on the Hyperliquid position, \(C\) is cash received from claims, \(F\) is the fee, and \(c_{\text{hedge}}\) and \(f_{\text{hedge}}\) are Hyperliquid trading fees and funding. Simulated and real amounts are kept in separate ledgers, and deployed capital, the measure the strategy is optimised against, is the fee plus Hyperliquid margin plus any hedge losses carried before claims arrive, taken at the 95th percentile across simulated account lives. Figure 3 shows how the two accounts link to real capital.</p>
+  <p class="where">where \(\Pi_{\text{hedge}}\) is the profit on the Hyperliquid position, \(C\) is cash received from claims, \(F\) is the fee, and \(c_{\text{hedge}}\) and \(f_{\text{hedge}}\) are Hyperliquid trading fees and funding. Keeping simulated and real amounts in separate ledgers makes it possible to measure deployed capital, the quantity the strategy is optimised against, as the fee plus the Hyperliquid margin plus any hedge losses carried before payouts arrive, taken at the 95th percentile across simulated account lives. Figure 3 shows how the two accounts connect to the investor's capital.</p>
   <figure>
     <p class="ft">Figure 3. Strategy structure and real cash flows</p>
     <div class="chart dia dia-narrow">
@@ -581,17 +581,17 @@ ol.events li{margin:0 0 6px}
 
 
 
-  <h2>2.4 The Evaluation as an Option</h2>
-  <p>An evaluation works like leverage with a capped downside. In the running example the position is \(N \approx \$82{,}000\), which is 8.2 times the displayed balance and about a thousand times the fee. Yet the buyer's real loss is limited to the fee \(F\), and the real gain is limited to the value of a funded account. The value of the evaluation therefore depends on two quantities: the probability of passing and the value of a funded account. In option terms, the evaluation stage is a double-barrier digital option. It pays a fixed amount, the value of a funded account, if simulated profit reaches the target before the loss limit, and it expires worthless otherwise; the fee is its premium. The funded stage is a claim on a share of profit that ends at a fixed drawdown. Sections 2.5 and 2.6 price the two parts.</p>
+  <h2>2.4 Why Is the Evaluation an Option?</h2>
+  <p>An evaluation behaves like leverage with a capped downside, which is the key to valuing it. In the running example the position is \(N \approx \$82{,}000\), about 8.2 times the displayed balance and roughly a thousand times the fee, yet the buyer's real loss can never exceed the fee \(F\) and the real gain can never exceed the value of a funded account, so the evaluation's worth depends on only two quantities, the probability of passing and the value of the funded account that a pass delivers. In option terms, the evaluation stage is a double-barrier digital option, paying a fixed amount, the value of a funded account, if simulated profit reaches the target before the loss limit and expiring worthless otherwise, with the fee as its premium, while the funded stage is a claim on a share of profit that ends at a fixed drawdown. Sections 2.5 and 2.6 price the two parts in turn.</p>
 
-  <h2>2.5 Pass Probability</h2>
-  <p>I value the account for a trader with no forecasting ability. This gives the edge available to any buyer, without assuming skill. The account's simulated profit is modelled as a random walk with no trend, in which each move is as likely to be up as down. The walk starts at zero and ends when it first reaches either \(+G\) or \(-D\). This is the gambler's-ruin problem, and the probability of reaching the target first is</p>
+  <h2>2.5 How Likely Is a Pass?</h2>
+  <p>I value the account for a trader with no forecasting ability, because that is the edge available to any buyer without having to assume skill. Under that assumption the account's simulated profit behaves like a random walk with no trend, in which each move is as likely to be up as down, starting at zero and ending as soon as it reaches either \(+G\) or \(-D\). This is the classic gambler's-ruin problem, and the probability of reaching the target first is</p>
   <div class="math">\[ P(\text{pass}) = \frac{D}{G + D} \tag{2} \]</div>
   <p class="where">where \(D\) is the loss limit and \(G\) is the profit target. For the running example,</p>
   <div class="math">\[ P(\text{pass}) = \frac{600}{1{,}000 + 600} = 0.375. \]</div>
-  <p>Position size is absent from equation (2), so it changes only how long the evaluation is expected to last,</p>
+  <p>Position size, notably, does not appear in equation (2), which means that a larger position leaves the chance of passing unchanged and affects only how long the evaluation is expected to last,</p>
   <div class="math">\[ \mathbb{E}[\tau] = \frac{G\,D}{\sigma^{2}}, \tag{3} \]</div>
-  <p class="where">where \(\sigma\) is the dollar volatility of the position, which is proportional to its notional \(N\). Doubling the position cuts the expected duration by four and leaves the chance of passing unchanged, which matters for the strategy because a faster account frees its capital sooner. Figure 4 simulates the process.</p>
+  <p class="where">where \(\sigma\) is the dollar volatility of the position, which rises in proportion to its notional \(N\). Doubling the position therefore cuts the expected duration by a factor of four without changing the chance of passing, and this matters for the strategy because an account that resolves faster frees its capital sooner. Figure 4 simulates the process.</p>
   <figure>
     <p class="ft">Figure 4. Simulated evaluations for a trader with no skill</p>
     <div class="ctrls"><button class="btn pri" id="sim-run" type="button">Run 100 more</button><button class="btn" id="sim-reset" type="button">Reset</button></div>
@@ -600,17 +600,17 @@ ol.events li{margin:0 0 6px}
     <figcaption><b>Note:</b> Each path moves $20 up or down at random until it reaches +$1,000 (pass) or −$600 (fail). Simulated in the page.</figcaption>
   </figure>
 
-  <h2>2.6 Funded Account Value</h2>
-  <p>A funded account has no profit target and closes when its balance falls \(D\) below the starting level. Because profit is withdrawn as it accrues, the balance never rises above its start. The fixed loss limit therefore acts as a drawdown of \(D\) from the running maximum of cumulative profit. For a trader with no skill, the expected cumulative profit before closure equals \(D\) (Lehoczky, 1977), so the cash value of a funded account is</p>
+  <h2>2.6 What Is a Funded Account Worth?</h2>
+  <p>A funded account has no profit target and closes only when its balance falls \(D\) below its starting level. Because profit is withdrawn as soon as it accrues, the balance never rises above its start, so the fixed loss limit works in practice as a drawdown of \(D\) from the highest point of cumulative profit, and for a trader with no skill the expected profit withdrawn before that drawdown occurs equals \(D\) (Lehoczky, 1977). The cash value of a funded account is therefore</p>
   <div class="math">\[ V_{\text{funded}} = s\,D, \tag{4} \]</div>
   <p class="where">where \(s\) is the profit share. For the running example, \(V_{\text{funded}} = 0.80 \times 600 = \$480\).</p>
 
-  <h2>2.7 Expected Value</h2>
-  <p>Combining equations (2) and (4), the expected value of the evaluation net of the fee is</p>
+  <h2>2.7 What Is the Evaluation Worth?</h2>
+  <p>Combining the probability of passing in equation (2) with the funded value in equation (4) gives the expected value of the evaluation, net of the fee,</p>
   <div class="math">\[ \begin{aligned} V &= P(\text{pass})\,V_{\text{funded}} - F \\ &= \frac{s\,D^{2}}{G + D} - F. \end{aligned} \tag{5} \]</div>
   <p>For the running example,</p>
   <div class="math">\[ V = 0.375 \times \$480 - \$80 = \$180 - \$80 = \$100. \]</div>
-  <p>Figure 5 shows the same calculation as a probability tree.</p>
+  <p>Figure 5 sets out the same calculation as a probability tree, with each branch showing the chance of an outcome and the real payoff it delivers.</p>
   <figure>
     <p class="ft">Figure 5. Payoff of one evaluation for a trader with no skill</p>
     <div class="chart dia dia-wide">
@@ -657,10 +657,10 @@ ol.events li{margin:0 0 6px}
     </svg></div>
     <figcaption><b>Note:</b> $10,000 one-step evaluation, no skill, no costs. Payoffs are net of the $80 fee.</figcaption>
   </figure>
-<p>The evaluation therefore pays back $180 on average for an $80 fee. Appendix A gives the general form for multi-step evaluations, in which every step must be passed.</p>
+<p>On average, then, the evaluation returns $180 for an $80 fee, a gap of $100 per account before any costs are counted. Multi-step evaluations follow the same logic with every step required to pass, and Appendix A gives their general form.</p>
 
-  <h2>2.8 Across Vest's Range</h2>
-  <p>The same mispricing appears across Vest's whole range. Figure 6 applies equation (5) to all 57 evaluations on sale.</p>
+  <h2>2.8 Is the Gap Specific to One Account?</h2>
+  <p>The gap is not confined to one account but runs across almost the whole of Vest's range, as Figure 6 shows by applying equation (5) to all 57 evaluations on sale.</p>
   <figure>
     <p class="ft">Figure 6. Fee against expected payout, all evaluations</p>
     <div class="legend" id="lg-acc"></div>
@@ -675,13 +675,12 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-persist" data-title="3. Why Does the Mispricing Persist?" hidden>
   <h1>3. Why Does the Mispricing Persist?</h1>
-  <p><strong>Because Vest's price is set for the customers it actually has, and for them it works.</strong> The fee breaks even for a trader who passes about 22 percent of the time, which is generous to a coin flip but not to the typical customer, who over-trades and pays costs on every impulse; Vest earns on the majority much as a gym earns on members who stop turning up (DellaVigna and Malmendier, 2006), and the opportunity belongs only to a buyer who removes the behaviour the price relies on.</p>
-  <h2>3.1 Pricing on Customer Behaviour</h2>
-  <p>This pricing is still rational for Vest, because it reflects how its customers actually trade. The fee breaks even against customers with a small negative edge, which is realistic for retail traders once costs and over-trading are counted. Many customers also buy again after failing. The gap is therefore available only to a buyer who avoids those losses and trades at very low cost. Section 6 measures how much of it survives the daily loss limit and transaction costs, which equation (5) leaves out.</p>
-  <p>Vest leaves the gap open because its pricing earns from the majority of customers. The fee breaks even against a trader who passes about 22% of the time (Section 3.2). Most retail customers pass less often once their own costs and over-trading are counted. The edge therefore exists only for a buyer who trades mechanically, cheaply and with a hedge. The most direct way for Vest to close it would be to raise the fee: at about $180, the $10,000 evaluation would be worth nothing to a trader with no skill. A trailing loss limit or a time limit during the evaluation would also lower the pass rate.</p>
-  <p>Industry figures support this reading. Retail prop firms earn most of their revenue from evaluation fees, and reported pass rates sit between roughly 5 and 14 percent depending on the firm and the challenge (Track360, 2026), well below the 22 percent at which Vest's fee breaks even, which means the typical customer funds the payouts of the few who pass and Vest's pricing is safe against the customers it expects. Those figures come from industry trackers whose methods are not fully disclosed, so they indicate an order of magnitude and no more.</p>
-  <h2>3.2 The Break-Even Trader</h2>
-  <p>The value of normal trading depends heavily on skill, and the simplest measure of skill here is the probability of passing. A trader with no skill passes 37.5% of the time. A better trader passes more often, and a trader who over-trades or pays high costs passes less often. Table 2 values the same $10,000 evaluation, traded normally without a hedge, for five types of trader.</p>
+  <p><strong>Vest's price is set for the customers it actually has, and against them it works.</strong> The fee breaks even for a trader who passes about 22 percent of the time, a bar that is generous to a coin flip but not to the typical customer, who over-trades and pays costs on every impulse, so Vest earns on the majority in much the same way that a gym earns on members who stop turning up (DellaVigna and Malmendier, 2006), and the opportunity belongs only to a buyer who removes the behaviour the price relies on.</p>
+  <h2>3.1 Who Is the Price Set For?</h2>
+  <p>The pricing remains rational for Vest because it reflects how its customers actually trade, not what the contract is worth. The fee breaks even against customers with a small negative edge, which is realistic for retail traders once spreads, fees and over-trading are counted, and many of those customers buy a new evaluation after failing, so each one tends to contribute several fees before a payout is ever made. The gap is therefore open only to a buyer who avoids those losses, trades at very low cost and hedges what remains, and Section 6 measures how much of it survives the daily loss limit and the transaction costs that equation (5) leaves out.</p>
+  <p>Industry figures support this reading. Retail prop firms earn most of their revenue from evaluation fees, and reported pass rates sit between roughly 5 and 14 percent depending on the firm and the challenge (Track360, 2026), well below the 22 percent at which Vest's fee breaks even, which means the typical customer funds the payouts of the few who pass and leaves Vest's pricing comfortably safe against the customers it expects. Because those figures come from industry trackers whose methods are not fully disclosed, they indicate an order of magnitude and no more.</p>
+  <h2>3.2 At What Skill Does the Fee Break Even?</h2>
+  <p>Since the value of normal trading depends heavily on skill, the clearest way to see who the fee is set for is to measure skill by the probability of passing. A trader with no skill passes 37.5% of the time, a better trader passes more often and a trader who over-trades or pays high costs passes less often, and Table 2 values the same $10,000 evaluation, traded normally without a hedge, for five such types of trader.</p>
   <div class="tbl">
     <p class="tt">Table 2. Expected value of normal trading by type of trader</p>
     <table>
@@ -696,16 +695,16 @@ ol.events li{margin:0 0 6px}
     </table>
     <p class="note"><b>Note:</b> Formula in Appendix A.7 with a constant trading edge, no transaction costs.</p>
   </div>
-  <p><strong>Vest's fee is fair for a trader who passes about 22% of the time.</strong> Any trader who passes more often profits on average, and a trader with no skill is well above this line. The fee is effectively set for customers who trade worse than a coin flip, which is likely to describe many retail traders once costs are counted. Figure 7 plots the same values across the full range of skill.</p>
+  <p><strong>Vest's fee is fair for a trader who passes about 22% of the time.</strong> Any trader who passes more often than that profits on average, and a trader with no skill sits well above the line, which means the fee is effectively set for customers who trade worse than a coin flip, a description likely to fit many retail traders once their costs are counted. Figure 7 plots the same values across the full range of skill.</p>
   <figure>
     <p class="ft">Figure 7. Expected value of normal trading by chance of passing</p>
     <div class="chart" id="c-skill"></div>
     <figcaption><b>Note:</b> $10,000 one-step evaluation without a hedge, before costs. Points are the trader types in Table 2. Source: Appendix A.7.</figcaption>
   </figure>
-  <p>Even when its expected value is positive, normal trading loses on most outcomes: the trader with no skill expects +$100 but loses the fee 62.5% of the time. Section 4 develops the hedge that removes this risk.</p>
+  <p>Even where its expected value is positive, however, normal trading loses on most outcomes, since the trader with no skill expects +$100 per account but still loses the fee 62.5% of the time, and it is this lopsided payoff that the hedge in Section 4 is designed to remove.</p>
 
-  <h2>3.3 What Vest Could Change</h2>
-  <p>The cleanest fix is price. At about $180, the expected payout to a trader with no skill, the $10,000 evaluation would be worth nothing to a mechanical buyer, while a trailing loss limit or a time limit during the evaluation would close part of the gap by lowering the pass rate. Either change would leave Vest's economics against its typical customer intact, since those customers already pass well below the 22 percent break-even rate, which is why the gap is better read as a deliberate pricing choice with a narrow blind spot than as an error.</p>
+  <h2>3.3 What Could Vest Change?</h2>
+  <p>The cleanest fix for Vest would be price. At about $180, the expected payout to a trader with no skill, the $10,000 evaluation would be worth nothing to a mechanical buyer, while a trailing loss limit or a time limit during the evaluation would close part of the gap by lowering the pass rate. Either change would leave Vest's economics against its typical customer intact, since those customers already pass well below the 22 percent break-even rate, which is why the gap is better read as a deliberate pricing choice with a narrow blind spot than as an error.</p>
 </section>
 
 
@@ -713,12 +712,12 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-hedging" data-title="4. How Is the Risk Hedged?" hidden>
   <h1>4. How Is the Risk Hedged?</h1>
-  <p><strong>With a position on Hyperliquid sized to the account's real exposure, 0.30 of the position during the evaluation and 0.80 once funded, which makes the real payoff the same whether the account passes or fails.</strong> Most of the $82,000 position is simulated money, so a one-for-one hedge would protect money that does not exist; the right hedge follows the account's real-money delta, in the same way that a bank hedges a mortgage book with interest rate swaps sized to its sensitivity to rates and not to its face value.</p>
-  <p>The payoff in equation (5) is lopsided, because the fee is lost with probability 0.625. The hedge offsets it by holding an opposite position on Hyperliquid of \(h\) dollars for each dollar of evaluation position.</p>
+  <p><strong>The hedge is a short position on Hyperliquid's Nasdaq 100 contract, sized at 0.30 of the Vest position during the evaluation and 0.80 once the account is funded, which makes the real payoff the same whether the account passes or fails.</strong> The hedge is far smaller than the position because most of the $82,000 on Vest is simulated money and only the part that can turn into real cash needs protecting, in the same way that a bank hedges a mortgage book with interest rate swaps sized to the book's sensitivity to rates and not to its face value.</p>
+  <p>The need for a hedge comes from the lopsided payoff in equation (5), where the fee is lost with probability 0.625, and the hedge addresses it by holding an opposite position on Hyperliquid of \(h\) dollars for each dollar of evaluation position.</p>
 
-  <h2>4.1 The Hedging Venue</h2>
-  <p>Hyperliquid's Nasdaq 100 contract tracks Vest's closely enough to serve as the hedge. The evaluation trades the Vest Nasdaq 100 perpetual (NDX-USD-PERP), and the hedge uses the Nasdaq 100 perpetual on Hyperliquid (xyz:XYZ100), which is listed by a third party. Hourly returns on the two contracts have a correlation of 0.991, so an equal and opposite position removes 98.2% of the price risk. The contracts do track different index prices: Hyperliquid traded on average about 0.6% below Vest, and the gap moved slowly between 0.25% and 1.0%. Positions and stops are therefore set in percentage terms. At one-minute frequency, after adjusting for non-synchronous trading, neither exchange leads the other. Hyperliquid funding averaged 0.05 basis points per hour, with longs paying shorts 89% of the time.</p>
-  <p>Figure 8 shows the two contracts over the last six weeks of the sample. The upper panel shows them moving together, and the lower panel shows the slowly moving gap between them. Table 3 lists the trading fees on each exchange.</p>
+  <h2>4.1 Why Hyperliquid?</h2>
+  <p>Hyperliquid's Nasdaq 100 contract tracks Vest's closely enough to serve as the hedge. The evaluation trades the Vest Nasdaq 100 perpetual (NDX-USD-PERP) while the hedge uses the Nasdaq 100 perpetual on Hyperliquid (xyz:XYZ100), a contract listed by a third party, and because hourly returns on the two have a correlation of 0.991, an equal and opposite position removes 98.2% of the price risk. The two contracts do follow slightly different index prices, with Hyperliquid trading on average about 0.6% below Vest and the gap drifting slowly between 0.25% and 1.0%, which is why positions and stops are set in percentage terms and not as price levels. At one-minute frequency, and after adjusting for non-synchronous trading, neither exchange leads the other, while Hyperliquid funding averaged 0.05 basis points per hour, with longs paying shorts 89% of the time.</p>
+  <p>Figure 8 shows both contracts over the last six weeks of the sample, moving together in the upper panel while the lower panel tracks the slowly changing gap between them, and Table 3 lists the trading fees on each exchange.</p>
   <figure>
     <p class="ft">Figure 8. Vest and Hyperliquid Nasdaq 100 prices, real data</p>
     <div class="legend" id="lg-px"></div>
@@ -740,12 +739,12 @@ ol.events li{margin:0 0 6px}
     </table>
     <p class="note"><b>Note:</b> Taker fees apply to market orders and maker fees to resting limit orders. Hyperliquid's index contracts currently carry a 90% fee reduction that excludes gold. Sources: Vest markets page; Hyperliquid fee schedule and API, 10 November 2026.</p>
   </div>
-  <h2>4.2 Optimal Hedge Ratio</h2>
-  <p>The correct hedge ratio is the change in the account's real value per dollar of simulated profit. This ratio is well below one, because most of the money in the evaluation is simulated. A one-for-one hedge, $82,000 long on Vest and $82,000 short on Hyperliquid, is how a real position would be hedged. Applied here, it would cover the simulated exposure as well as the real one. Between the two limits, simulated profit moves by \(G + D\) while real value moves from zero to \(V_{\text{funded}}\), so the hedge ratio is</p>
+  <h2>4.2 How Large Should the Hedge Be?</h2>
+  <p>How large the hedge should be depends on a question that is easy to overlook, namely how much of the money in the account is real. The evaluation holds an $82,000 position, yet the buyer's real outcome ranges only from losing the $80 fee, if the account fails, to receiving a funded account worth about $480, if it passes, so across the $1,600 of simulated profit that separates the two limits the account's real value changes by just $480. In general terms, with simulated profit moving by \(G + D\) between the limits while real value moves from zero to \(V_{\text{funded}}\), the hedge ratio is</p>
   <div class="math">\[ h = \frac{V_{\text{funded}}}{G + D} = \frac{s\,D}{G + D}. \tag{6} \]</div>
   <p class="where">For the running example,</p>
   <div class="math">\[ h = \frac{480}{1{,}000 + 600} = 0.30. \]</div>
-  <p>Figure 9 shows this as a straight line from the loss limit to the target, with a slope of 0.30.</p>
+  <p>The result, around 30 cents of real value for every simulated dollar, is what the hedge needs to offset, which is why the position on Hyperliquid is set at 0.30 of the Vest position during the evaluation and not at the full $82,000. Figure 9 shows the same relationship as a straight line from the loss limit to the target, with a slope of 0.30.</p>
   <figure>
     <p class="ft">Figure 9. Each simulated dollar carries 30 cents of real value</p>
     <div class="chart dia dia-wide">
@@ -789,14 +788,14 @@ ol.events li{margin:0 0 6px}
     </svg></div>
     <figcaption><b>Note:</b> Real value rises from $0 at the loss limit to $480 at the target, over $1,600 of simulated profit. The slope, 480 / 1,600 = 0.30, is equation (6).</figcaption>
   </figure>
-<p>Once the account is funded, each dollar of simulated profit is worth \(s\) dollars in cash, and the ratio rises to \(h_{\text{funded}} = s = 0.80\). Equation (6) is in effect the real-money delta of the evaluation. It differs sharply from the ratio of about 1.02 that best offsets price moves between the two contracts. That ratio hedges the price, whereas equation (6) hedges the account's real value.</p>
+<p>The ratio rises once the account is funded, because from that point Vest pays out 80% of any profit withdrawn and each simulated dollar is worth 80 cents in cash, so the hedge is increased to \(h_{\text{funded}} = s = 0.80\) at the moment the account passes. Taken together, these two ratios measure the account's real-money delta in each stage, which is a quite different quantity from the ratio of about 1.02 that best matches the price movements of the two contracts: that ratio would hedge the price of the Nasdaq, whereas the strategy needs to hedge the cash the investor actually stands to gain or lose.</p>
 
-  <h2>4.3 Removing the Outcome Risk</h2>
-  <p>With hedge ratio \(h\), the real payoffs when the evaluation fails and when it passes are</p>
+  <h2>4.3 What Does the Hedge Change?</h2>
+  <p>The clearest way to see what the hedge does is to write down the real payoff in each outcome. With hedge ratio \(h\), the real payoffs when the evaluation fails and when it passes are</p>
   <div class="math">\[ \begin{aligned} \Pi_{\text{fail}} &= h\,D - F, \\ \Pi_{\text{pass}} &= V_{\text{funded}} - h\,G - F. \end{aligned} \tag{7} \]</div>
-  <p>Setting \(\Pi_{\text{fail}} = \Pi_{\text{pass}}\) recovers equation (6). For the running example at \(h = 0.30\),</p>
+  <p>Setting the two payoffs equal recovers equation (6), and for the running example at \(h = 0.30\) both come to the same figure,</p>
   <div class="math">\[ \begin{aligned} \Pi_{\text{fail}} &= 0.30 \times 600 - 80 = \$100, \\ \Pi_{\text{pass}} &= 480 - 0.30 \times 1{,}000 - 80 = \$100. \end{aligned} \]</div>
-  <p>Figure 10 follows every complete path of the account, including the funded stage. Each path ends at the same real payoff.</p>
+  <p>The same holds once the funded stage is included, as Figure 10 shows by following every complete path of the account to the same real payoff.</p>
   <figure>
     <p class="ft">Figure 10. Real payoff along each complete path</p>
     <div class="tbl dia-narrow" style="margin:0">
@@ -854,7 +853,7 @@ ol.events li{margin:0 0 6px}
     <figcaption><b>Note:</b> $10,000 one-step evaluation, theoretical hedge (0.30 before funding, 0.80 after), no skill, no costs. On the third path the funded-stage hedge loses $480 as profit rises and regains it as profit falls.</figcaption>
   </figure>
 
-<p><strong>With the hedge, the real payoff is the same whether the evaluation passes or fails.</strong> The hedge changes the spread of outcomes but leaves their average unchanged. Without it, the account pays −$80 with probability 0.625 and +$400 with probability 0.375, an expected value of +$100 with a standard deviation of $232. With it, both outcomes pay +$100, the same expected value with a standard deviation of zero. A hedge on a market with no trend earns nothing on average, so its only effect is to remove uncertainty. Figure 11 shows both payoffs across values of \(h\).</p>
+<p><strong>The effect of the hedge is to narrow the range of outcomes while leaving the average unchanged.</strong> Without it, the account loses the $80 fee in 62.5% of cases and returns about $400 in the remainder, an average of $100 with a standard deviation of $232 that is realised only through a small number of large wins. With the hedge at 0.30, the Hyperliquid position gains around $180 when the account fails and loses around $300 when it passes, so both outcomes settle at the same $100 and the standard deviation falls to zero. The average does not move because a hedge on a market with no trend earns nothing over time, which limits its contribution to removing the uncertainty around the expected value, and Figure 11 shows both payoffs across the full range of hedge sizes.</p>
   <figure>
     <p class="ft">Figure 11. Real payoff when the evaluation fails and when it passes, by hedge ratio</p>
     <div class="ctrls"><label for="h-slider">Hedge ratio</label><input type="range" id="h-slider" min="0" max="1" step="0.01" value="0"><b id="h-val" style="font-variant-numeric:tabular-nums;min-width:34px">0.00</b>
@@ -863,27 +862,27 @@ ol.events li{margin:0 0 6px}
     <div class="chart" id="c-branch"></div>
     <figcaption id="h-note"></figcaption>
   </figure>
-  <p>A one-for-one hedge overshoots this point and creates a new gamble. Passing then costs $1,000 of real money to obtain an account worth $480. The two payoffs end up $1,120 apart, a wider spread than having no hedge at all.</p>
+  <p>Hedging one-for-one, by contrast, overshoots and replaces one gamble with another, since passing the evaluation would then cost $1,000 of real money on Hyperliquid in exchange for an account worth $480, leaving the two outcomes $1,120 apart, a wider spread than if the account had not been hedged at all.</p>
 
   
-  <h2>4.4 The Hedge Across Trader Types</h2>
-  <p>The hedge also makes the account's value independent of skill. Section 3.2 showed that normal trading is worth −$41 to +$480 depending on skill. At the ratios in equation (6), the hedged account is worth $100 for every type of trader. The hedge gains when the trader loses simulated money and loses when the trader makes it, so the effect of skill cancels. What remains is the gap between the fee and the value of the contract. Figure 12 compares the two cases.</p>
+  <h2>4.4 Does Skill Still Matter Once Hedged?</h2>
+  <p>Once the account is hedged at these ratios, the trader's skill stops affecting its value. Section 3.2 showed that normal trading is worth anywhere from −$41 to +$480 depending on skill, yet at the ratios in equation (6) the hedged account is worth $100 for every type of trader, because the hedge gains whenever the trader loses simulated money and loses whenever the trader makes it, so skill cancels out and what remains is simply the gap between the fee and the value of the contract. Figure 12 compares the two cases.</p>
   <figure>
     <p class="ft">Figure 12. Expected value with and without the hedge, by chance of passing</p>
     <div class="legend" id="lg-skill2"></div>
     <div class="chart" id="c-skill2"></div>
     <figcaption><b>Note:</b> $10,000 one-step evaluation, before costs. Hedge of 0.30 during the evaluation and 0.80 once funded. Source: Appendix A.7.</figcaption>
   </figure>
-  <p>The hedge adds the most value for the traders Vest's pricing relies on: for the break-even trader, normal trading is worth nothing, while the hedged account is worth $100. A skilled trader, by contrast, gives up upside by hedging fully. The hedge size is therefore a choice between keeping skill and removing risk, and Figure 13 shows this trade-off in full.</p>
+  <p>This matters most for exactly the traders Vest's pricing relies on, since for the break-even trader normal trading is worth nothing while the hedged account is still worth $100. A genuinely skilled trader, by contrast, gives up upside by hedging fully, so the size of the hedge becomes a choice between keeping the benefit of skill and removing risk, a trade-off that Figure 13 maps in full.</p>
   <figure>
     <p class="ft">Figure 13. Expected value by trader skill and hedge size</p>
     <div class="chart3d" id="c-3dskill"></div>
     <figcaption><b>Note:</b> Expected value per $10,000 account before costs, by chance of passing and by hedge size as a multiple of the 0.30/0.80 ratio. Source: Appendix A.7.</figcaption>
   </figure>
-  <p>Real prices place the strategy where the hedge is most useful. On real prices, the daily loss limit made the evaluation behave like a trader who passes about 28% of the time (Section 6.2). This lies between the break-even trader and the trader with no skill, which explains why the hedged strategy outperforms normal trading in the simulations that follow.</p>
+  <p>On real prices, the strategy sits in the range where the hedge is most useful, because the daily loss limit made the evaluation behave like a trader who passes about 28% of the time (Section 6.2), between the break-even trader and the trader with no skill, and this is why the hedged strategy outperforms normal trading in the simulations that follow.</p>
 
-  <h2>4.5 Empirical Hedge Performance</h2>
-  <p>With the daily loss limit and transaction costs, the two outcomes are only approximately equal. The best hedge size must therefore be measured on real prices. Figure 14 and Table 4 show how much real profit varies at each size.</p>
+  <h2>4.5 How Does the Hedge Perform on Real Prices?</h2>
+  <p>Once the daily loss limit and transaction costs are included, the two outcomes are only approximately equal, so the best hedge size has to be measured on real prices and not derived, and Figure 14 and Table 4 show how much real profit varies at each size.</p>
   <figure>
     <p class="ft">Figure 14. Standard deviation of real profit per account by hedge size</p>
     <div class="legend" id="lg-sweep"></div>
@@ -895,12 +894,12 @@ ol.events li{margin:0 0 6px}
     <table id="tbl-sweep"></table>
     <p class="note"><b>Note:</b> Market orders and all measured costs. Source: as Figure 14.</p>
   </div>
-  <p>Three-quarters of the theoretical hedge gives the most stable result. Without a hedge, 88% of accounts lose money and the standard deviation of real profit is $291. At 0.75 times the theoretical ratio, 15% of accounts lose money and the standard deviation falls to $73, its lowest level; this size also requires less margin. Mean profit continues to rise with hedge size in this sample. That rise occurs only because evaluations failed more often than they would for a trader with no skill (Section 6.2), and the hedge gains on failure. I therefore exclude it when choosing the hedge.</p>
+  <p>On real prices, three-quarters of the theoretical hedge gives the most stable result. Without a hedge, 88% of accounts lose money and real profit has a standard deviation of $291, whereas at 0.75 of the theoretical ratio only 15% lose money, the standard deviation falls to its lowest level of $73 and the smaller hedge also needs less margin. Average profit does keep rising with larger hedges in this sample, but only because accounts failed more often than a trader with no skill would expect (Section 6.2) and the hedge profits from failures, so that effect is excluded when choosing the size.</p>
 
-  <h2>4.6 Margin and Liquidation</h2>
-  <p>The hedge loses money while the evaluation moves toward its target. If the hedge were liquidated before the evaluation passed, the strategy would lose on both sides, so its leverage must leave room for that move. A Hyperliquid position at leverage \(L\) is liquidated after an adverse move of</p>
+  <h2>4.6 Could the Hedge Be Liquidated?</h2>
+  <p>Because the hedge loses money while the evaluation moves toward its target, its leverage has to leave room for that move, since a liquidation before the evaluation passed would leave the strategy losing on both sides at once. A Hyperliquid position at leverage \(L\) is liquidated after an adverse move of</p>
   <div class="math">\[ \begin{aligned} m(L) &= \frac{1/L - \mu}{1 + \mu}, \\ \mu &= \frac{1}{2\,L_{\max}}, \end{aligned} \tag{8} \]</div>
-  <p class="where">where \(\mu\) is the maintenance margin rate and \(L_{\max} = 30\) is the maximum leverage on the contract. I require \(m(L) \ge 2\,G/N\), so that liquidation lies at least twice as far away as the evaluation target. For the running example this permits leverage of up to 20.</p>
+  <p class="where">where \(\mu\) is the maintenance margin rate and \(L_{\max} = 30\) is the maximum leverage on the contract. Requiring \(m(L) \ge 2\,G/N\) keeps liquidation at least twice as far away as the evaluation target, which for the running example permits leverage of up to 20.</p>
 </section>
 
 
@@ -908,9 +907,9 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-data" data-title="5. How the Strategy Is Tested" hidden>
   <h1>5. How the Strategy Is Tested</h1>
-  <p><strong>On real prices, with every fee charged and every rule fixed before the first test.</strong> The tests use paired Vest and Hyperliquid prices checked against my own trades, a simulator that reproduces the closed-form value exactly before any real price is introduced, and a single trading rule applied unchanged to every account, so the results measure the contract and none of them measure a tuned strategy.</p>
-  <h2>5.1 Data</h2>
-  <p>The analysis uses public price data from both exchanges, Vest's published contract terms and my own executed trades on Vest. Table 5 lists each series, its period and its use.</p>
+  <p><strong>The strategy is tested on real prices, with every fee charged and every rule fixed before the first test was run.</strong> The tests combine paired Vest and Hyperliquid prices that are checked against my own trades, a simulator that reproduces the closed-form value exactly before any real price is introduced, and a single trading rule applied unchanged to every account, so the results measure the contract itself and none of them measure a strategy tuned to fit the data.</p>
+  <h2>5.1 What Data Is Used?</h2>
+  <p>The analysis draws on public price data from both exchanges, Vest's published contract terms and my own executed trades on Vest, and Table 5 lists each series together with its period and its use.</p>
   <div class="tbl">
     <p class="tt">Table 5. Data</p>
     <table>
@@ -927,12 +926,12 @@ ol.events li{margin:0 0 6px}
     <p class="note"><b>Note:</b> Price data are from the venues' public feeds.</p>
   </div>
 
-  <h2>5.2 Data Validation</h2>
-  <p>The price data matches my own trades and Vest's published bars, so the results rest on prices that were actually tradeable. Of 26 of my executed trades on Vest, 24 fall inside the matching one-minute range, and the other two fall in minutes with no trades. Hourly bars rebuilt from the minute data match Vest's published hourly bars to within 0.3 basis points at the close over 520 hours; shifting them by one hour raises the difference above 10 basis points. The 51 basis point level difference between the exchanges reflects their different reference prices. An earlier version of the simulator allowed hedge fills outside Hyperliquid's traded range, and this has been corrected. Real profit is reconciled path by path against equation (1), and 44 automated tests cover the accounting, account rules, formulas and fee schedule.</p>
+  <h2>5.2 Can the Prices Be Trusted?</h2>
+  <p>The price data matches both my own trades and Vest's published bars, so the results rest on prices that were actually tradeable. Of 26 trades I executed on Vest, 24 fall inside the matching one-minute range and the other two fall in minutes with no recorded trades, while hourly bars rebuilt from the minute data match Vest's published hourly bars to within 0.3 basis points at the close over 520 hours, a match that disappears, with differences above 10 basis points, if the bars are shifted by a single hour. The 51 basis point level difference between the exchanges reflects their different reference prices and not an error in the data. An earlier version of the simulator allowed hedge fills outside Hyperliquid's traded range, which has since been corrected, and real profit is now reconciled path by path against equation (1), with 44 automated tests covering the accounting, the account rules, the formulas and the fee schedule.</p>
 
   
-  <h2>5.3 Data Coverage and Gaps</h2>
-  <p>Every gap in the price series has a known cause, and no gap is filled. Figure 15 shows how many hours of data exist on each day for each series, and the list below explains each gap.</p>
+  <h2>5.3 Where Are the Gaps in the Data?</h2>
+  <p>Every gap in the price series has a known cause, and none has been filled. Figure 15 shows how many hours of data exist on each day for each series, and the list below explains where each gap comes from.</p>
   <figure>
     <p class="ft">Figure 15. Hours of price data per day, by series</p>
     <div class="chart" id="c-cov"></div>
@@ -946,8 +945,8 @@ ol.events li{margin:0 0 6px}
     <li><strong>The simulator uses the hourly series from 30 July to 28 October;</strong> the last two weeks are held back as an out-of-sample test (Section 8).</li>
   </ul>
 
-  <h2>5.4 Simulation Framework</h2>
-  <p>The simulator converts real prices into complete account lives. Each simulated path covers the evaluation, the funded stage if it is reached, and closure. Paths are built by reshuffling whole trading days of joint Vest and Hyperliquid hourly prices (a block bootstrap), which preserves intraday volatility patterns and the way the two exchanges move together. The trading rule was fixed in advance. One directional position is held until a limit is reached; it is closed for the day when the day's loss reaches 85% of the daily limit and reopened at the next reset; it is flat over weekends; and funded profit is withdrawn at a fixed threshold. Each path is run both long and short. On random prices without costs or a daily limit, the simulator gives $100.00, exactly matching equation (5). Figure 17 sets out the process.</p>
+  <h2>5.4 How Is Each Account Simulated?</h2>
+  <p>The simulator turns real prices into complete account lives, with each path covering the evaluation, the funded stage if it is reached, and the account's closure. Paths are built by reshuffling whole trading days of joint Vest and Hyperliquid hourly prices, a method known as a block bootstrap, which preserves both the pattern of volatility within each day and the way the two exchanges move together. The trading rule was fixed in advance and holds one directional position until a limit is reached, closing it for the day when the day's loss reaches 85% of the daily limit and reopening it at the next reset, staying flat over weekends and withdrawing funded profit at a fixed threshold, with each path run both long and short. On random prices without costs or a daily limit the simulator gives $100.00, exactly the value of equation (5), and Figure 17 sets out the process.</p>
   <p>The baseline strategy follows the same rules in every simulation, including the holdout, and Figure 16 follows one account through them on real prices:</p>
   <ul class="plain">
     <li><strong>Position.</strong> A fixed $82,173 Nasdaq 100 position on Vest, identical for every account, in the evaluation and once funded. The size is set so that the $600 loss limit equals 0.75 of a typical day's move (equation (9)).</li>
@@ -1027,12 +1026,12 @@ ol.events li{margin:0 0 6px}
   </figure>
 
 
-  <p>Position size is parameterised by \(b\), the loss limit expressed in units of the position's daily volatility:</p>
+  <p>Position size is expressed through \(b\), which measures the loss limit in units of the position's typical daily move:</p>
   <div class="math">\[ N = \frac{D}{b\,\sigma_{d}}, \tag{9} \]</div>
-  <p class="where">where \(\sigma_d\) is the daily return volatility of the contract (0.97% over the sample). The running example uses \(b = 0.75\), giving \(N \approx \$82{,}000\).</p>
+  <p class="where">where \(\sigma_d\) is the daily return volatility of the contract, 0.97% over the sample, so that the running example's choice of \(b = 0.75\) implies a position of \(N \approx \$82{,}000\).</p>
 
-  <h2>5.5 Execution Model</h2>
-  <p>Results are reported under three execution cases, which differ in how orders reach the market. Table 6 defines each case. The mixed case, with limit orders for planned trades and market orders for stops and limit events, is the baseline.</p>
+  <h2>5.5 How Do Orders Reach the Market?</h2>
+  <p>Because the cost of a trade depends on how it reaches the market, results are reported under three execution cases, which Table 6 defines. The mixed case, which uses limit orders for planned trades and market orders for stops and limit events, serves as the baseline.</p>
   <div class="tbl">
     <p class="tt">Table 6. Execution assumptions</p>
     <table>
@@ -1046,12 +1045,12 @@ ol.events li{margin:0 0 6px}
     <p class="note"><b>Note:</b> Measured inputs: Vest crossing cost 0.53 bp (median stop slippage); Hyperliquid half-spread 0.18 bp; hedge reaction cost 0.8 bp, equal to the measured cost of closing five minutes late. Full parameters in Appendix B.</p>
   </div>
 
-  <h2>5.6 Strategy Optimisation</h2>
-  <p>Deployed capital limits any investor below the ten-account cap. I therefore choose configurations that maximise expected real profit per trading day per dollar of deployed capital,</p>
+  <h2>5.6 How Is the Best Configuration Chosen?</h2>
+  <p>For any investor below the ten-account cap, the binding constraint is the capital the strategy ties up, so configurations are chosen to maximise expected real profit per trading day for each dollar of deployed capital,</p>
   <div class="math">\[ \max_{\theta} \; \frac{\mathbb{E}[\Pi_\theta] \,/\, \mathbb{E}[T_\theta]}{K_\theta}, \tag{10} \]</div>
-  <p class="where">where \(\theta\) collects the evaluation type, position size \(b\), hedge multiple, withdrawal threshold and hedge leverage; \(T_\theta\) is account life in trading days; and \(K_\theta\) is the 95th percentile of deployed capital. I require that mean profit exceed two standard errors, that the probability of a real loss not exceed a specified limit, and that the liquidation constraint of Section 4.6 hold.</p>
-  <p>This objective selects the way of running the account that earns the most per day for each dollar of capital, subject to a maximum share of losing accounts.</p>
-  <p>The search narrows the options in three stages. A screen runs all 57 evaluations at five position sizes under each execution case (855 configurations, 400 account lives each). A refinement then takes the five most capital-efficient evaluations and varies position size, hedge size, withdrawal threshold and leverage (320 configurations, 1,000 account lives each). Finally, an integer program chooses how many of each configuration to hold for each capital budget and loss limit (Section 7.3). Figure 18 shows how the set narrows.</p>
+  <p class="where">where \(\theta\) collects the evaluation type, position size \(b\), hedge multiple, withdrawal threshold and hedge leverage, \(T_\theta\) is the account's life in trading days and \(K_\theta\) is the 95th percentile of deployed capital. Each candidate must also clear three conditions: mean profit above two standard errors, a probability of real loss within a specified limit, and the liquidation constraint of Section 4.6.</p>
+  <p>In plain terms, the objective selects the way of running the account that earns the most each day for every dollar of capital it requires, while keeping the share of losing accounts within a set limit.</p>
+  <p>The search narrows the options in three stages. A screen first runs all 57 evaluations at five position sizes under each execution case, 855 configurations with 400 account lives each; a refinement then takes the five most capital-efficient evaluations and varies position size, hedge size, withdrawal threshold and leverage, 320 configurations with 1,000 account lives each; and an integer program finally chooses how many of each configuration to hold for every capital budget and loss limit (Section 7.3). Figure 18 shows how the set narrows.</p>
   <figure>
     <p class="ft">Figure 18. From 855 candidate configurations to one baseline strategy</p>
     <div class="funnel">
@@ -1070,9 +1069,9 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-results" data-title="6. What Does Execution Cost?" hidden>
   <h1>6. What Does Execution Cost?</h1>
-  <p><strong>About half of the $100 theoretical value, and the half that goes is decided more by Vest's daily loss limit and the choice of order type than by fees.</strong> A comparison of six ways to use the account and a breakdown of where the value goes come first, followed by the execution choices that protect what remains: the order types each exchange offers, the market, the stop rule, the time of day and position sizing within the day. All results use mixed execution unless stated otherwise.</p>
-  <h2>6.1 Strategy Comparison</h2>
-  <p>A comparison of six ways to use the same account shows why the sized hedge is preferred. The first two rows of Table 7 come from the formula. The other four are simulated on the same account, the same $82,000 position and the same real prices, with realistic execution and 5,000 account lives each, so the comparison is direct. Figure 19 shows the average and range of outcomes for each.</p>
+  <p><strong>About half of the $100 theoretical value survives real trading, and what decides the other half is less the fees than Vest's daily loss limit and the choice of order type.</strong> The section first compares six ways of using the account and traces where the value goes, and then works through the execution choices that protect what remains, from the order types each exchange offers to the choice of market, the stop rule, the time of day and the sizing of the position within the day. All results use mixed execution unless stated otherwise.</p>
+  <h2>6.1 Which Way of Using the Account Works Best?</h2>
+  <p>Comparing six ways of using the same account shows why the sized hedge is preferred. The first two rows of Table 7 come from the formula, while the other four are simulated on the same account, with the same $82,000 position and the same real prices, under realistic execution and 5,000 account lives each, so the differences between them come from the strategy alone. Figure 19 shows the average and range of outcomes for each.</p>
   <div class="tbl">
     <p class="tt">Table 7. Six ways to use the $10,000 evaluation</p>
     <table id="tbl-cmp"></table>
@@ -1083,31 +1082,31 @@ ol.events li{margin:0 0 6px}
     <div class="chart" id="c-cmp"></div>
     <figcaption><b>Note:</b> Dot: average profit per account. Bar: 5th to 95th percentile. 5,000 account lives per strategy, all costs.</figcaption>
   </figure>
-  <p>The rows move from the customer Vest prices for to the strategy I would run:</p>
+  <p>Read from top to bottom, the rows move from the customer Vest prices for to the strategy I would run:</p>
   <ul class="plain">
     <li><strong>Break-even trader.</strong> Vest's $80 fee is fair for a trader who passes about 22% of the time, so this trader earns nothing on average.</li>
     <li><strong>No skill, by formula.</strong> A coin flip passes 37.5% of the time, which is worth $100 per account before costs.</li>
     <li><strong>Normal trading.</strong> On real prices the average is $25, but 83% of accounts lose the fee and results range from −$80 to +$625.</li>
-    <li><strong>One-for-one hedge.</strong> It has the highest average, $123, but that comes from a large real-money bet that the account fails. It only paid here because accounts failed more often than they would for a trader with no skill (Section 6.2). The worst outcomes go past −$860, and it needs about $6,000 of capital per account.</li>
+    <li><strong>One-for-one hedge.</strong> It has the highest average, $123, but that average comes from a large real-money bet that the account fails, a bet that paid in this sample only because accounts failed more often than they would for a trader with no skill (Section 6.2), while its worst outcomes go past −$860 and it ties up about $6,000 of capital per account.</li>
     <li><strong>Hedge at 0.30/0.80.</strong> 13% of accounts lose money and 90% of outcomes fall between −$43 and +$109.</li>
-    <li><strong>Baseline, at 0.75 of that ratio.</strong> 10% of accounts lose money, the worst 5% lose no more than $26, and capital per account falls to about $3,255. This gives the highest return on capital, 11.0% a month.</li>
+    <li><strong>Baseline, at 0.75 of that ratio.</strong> 10% of accounts lose money, the worst 5% lose no more than $26 and capital per account falls to about $3,255, which gives the highest return on capital of any row, 11.0% a month.</li>
   </ul>
 
-  <h2>6.2 Where the Value Goes</h2>
-  <p>About half of the theoretical value survives real trading. Figure 20 shows where the rest is lost, subtracting each real cost in turn from the $100 on the same simulated account lives.</p>
+  <h2>6.2 Where Does the Value Go?</h2>
+  <p>About half of the theoretical value survives real trading, and Figure 20 shows where the rest is lost by subtracting each real cost in turn from the $100, on the same simulated account lives.</p>
   <figure>
     <p class="ft">Figure 20. Decomposition of expected real profit per account</p>
     <div class="chart" id="c-ladder"></div>
     <figcaption><b>Note:</b> $10,000 one-step evaluation at a $41,000 position, theoretical hedge, 3,000 account lives per step. Source: Vest and Hyperliquid hourly prices, 30 July – 28 October 2026.</figcaption>
   </figure>
-  <p><strong>The daily loss limit costs more than fees.</strong> On real prices it lowers the pass rate from 37.5% to 27.6%, against 36.2% on random prices under the same rule. The trader must stop for the day near intraday lows, and on real prices those lows were followed by recoveries more often than a random walk would predict. Among the costs the trader controls, execution style matters most. Table 8 shows the baseline strategy under each execution case.</p>
+  <p><strong>The daily loss limit costs more than the fees.</strong> On real prices it lowers the pass rate from 37.5% to 27.6%, compared with 36.2% on random prices under the same rule, because the trader is forced to stop for the day near intraday lows, and on real prices those lows were followed by recoveries more often than a random walk would predict. Among the costs the trader can control, execution style matters most, as Table 8 shows for the baseline strategy under each execution case.</p>
   <div class="tbl">
     <p class="tt">Table 8. Baseline strategy by execution case</p>
     <table id="tbl-styles"></table>
     <p class="note"><b>Note:</b> 5,000 account lives per row, drawn with a different random seed from the search. Worst 5% is the mean of the lowest 5% of outcomes. Standard errors are reported in Appendix C.</p>
   </div>
 
-  <h2>6.3 Order Types and Their Fees</h2>
+  <h2>6.3 Which Order Types Matter, and What Do They Cost?</h2>
   <p>Both exchanges offer more than a choice between limit and market orders, and the distinction matters because fees follow what an order does to the book, not what it is called. An order that rests on the book adds liquidity and pays the maker fee, nothing on Vest and 0.3 basis points on Hyperliquid, while an order that executes against the book takes liquidity and pays the taker fee, 0.25 basis points on Vest's index markets and 0.9 on Hyperliquid, which means a limit order priced through the market is charged exactly as a market order would be. Table 9 sets out the order types each exchange offers and the part each plays in the strategy.</p>
   <div class="tbl">
     <p class="tt">Table 9. Order types, their fees and their role in the strategy</p>
@@ -1125,33 +1124,33 @@ ol.events li{margin:0 0 6px}
     </table>
     <p class="note"><b>Note:</b> Fees in basis points of notional per side, index markets. Sources: Vest order types and fee schedule, 28 October 2026; Hyperliquid order types documentation and fee schedule, 10 November 2026.</p>
   </div>
-  <p>The model treats every planned entry as a post-only order that fills at its price, which is the most favourable case. In practice a post-only order is cancelled if it would cross the market, and a resting order may wait or miss the move entirely, so the fill rate of post-only entries is the main thing the limit-order results take on trust. The stakes are large, since limit orders throughout earn $77 per account against $37 with market orders (Table 8), which makes the post-only fill rate the cheapest and most valuable quantity to measure in live trading (Section 10.4). Laddering entries with scale orders and slicing the hedge with TWAP orders are natural extensions that were not tested.</p>
-  <h2>6.4 Choice of Market</h2>
-  <p>Fees, more than raw price behaviour, decide which market to trade. Without costs the four markets earn similar amounts, $86 to $101 per account. With limit entries and market exits, the Nasdaq 100 earns $64 per account, Bitcoin $60, the S&amp;P 500 $53 and gold −$4. Gold loses money because its Hyperliquid fee is ten times that of the index contracts. Bitcoin is the closest alternative: it trades 24 hours a day and avoids Vest's weekend lock on index markets, but its higher fees on both exchanges leave the Nasdaq slightly ahead. Table 10 reports each market under each execution case.</p>
+  <p>The model treats every planned entry as a post-only order that fills at its price, which is the most favourable case. In practice a post-only order is cancelled if it would cross the market, and a resting order may wait or miss the move entirely, so the fill rate of post-only entries is the one quantity the limit-order results take on trust. The stakes are large, since limit orders throughout earn $77 per account against $37 with market orders (Table 8), which makes the post-only fill rate both the cheapest and the most valuable quantity to measure in live trading (Section 10.4), while laddering entries with scale orders and slicing the hedge with TWAP orders remain natural extensions that were not tested.</p>
+  <h2>6.4 Which Market Should Be Traded?</h2>
+  <p>Fees, more than the behaviour of prices, decide which market to trade. Without costs the four markets earn similar amounts, between $86 and $101 per account, but once limit entries and market exits are charged the Nasdaq 100 earns $64 per account, Bitcoin $60, the S&amp;P 500 $53 and gold −$4, with gold losing money because its Hyperliquid fee is ten times that of the index contracts. Bitcoin is the closest alternative, since it trades 24 hours a day and avoids Vest's weekend lock on index markets, but its higher fees on both exchanges leave the Nasdaq slightly ahead. Table 10 reports each market under each execution case.</p>
   <div class="tbl">
     <p class="tt">Table 10. Real profit per account by market</p>
     <table id="tbl-markets"></table>
     <p class="note"><b>Note:</b> $10,000 one-step evaluation, theoretical hedge, middle position size. Gold loses money with market orders because its Hyperliquid fee is ten times that of the index contracts.</p>
   </div>
 
-  <h2>6.5 Stop Orders</h2>
-  <p>The daily stop closes the position for the day when the day's loss approaches Vest's 3% daily limit. It is placed 31 bp from entry, and Vest's hard limit, which closes the account permanently, lies only 5.5 bp beyond it. About a third of daily stops are triggered by wicks, brief spikes that reverse within minutes. I therefore tested whether a different type of stop could avoid these false exits without endangering the account, comparing four rules:</p>
+  <h2>6.5 Which Stop Order Protects the Account?</h2>
+  <p>The daily stop closes the position for the day as the day's loss approaches Vest's 3% daily limit, and its placement leaves very little margin for error: it sits 31 bp from entry, while Vest's hard limit, which closes the account permanently, lies only 5.5 bp beyond it. Because about a third of daily stops are triggered by wicks, brief spikes that reverse within minutes, I tested whether a different type of stop could avoid these false exits without endangering the account, comparing four rules:</p>
   <ul class="plain">
     <li><strong>Stop-market.</strong> When the price touches the stop, the position is sold immediately at the best available price.</li>
-    <li><strong>Stop-limit.</strong> When the price touches the stop, a sell order is placed at the stop price. It never sells below that price, but it remains unfilled if the price continues to fall.</li>
+    <li><strong>Stop-limit.</strong> When the price touches the stop, a sell order is placed at the stop price, which never sells below that price but remains unfilled if the price continues to fall.</li>
     <li><strong>One-minute close.</strong> The position is sold only after a one-minute bar closes below the stop, so spikes that reverse within the minute are ignored.</li>
     <li><strong>Five-minute close.</strong> The same rule with five-minute bars.</li>
   </ul>
-  <p>Table 11 compares the four on about 5,500 simulated entries on the Vest minute data.</p>
+  <p>Table 11 compares the four rules on about 5,500 simulated entries using the Vest minute data.</p>
   <div class="tbl">
     <p class="tt">Table 11. Daily stop rules tested on real minute prices</p>
     <table id="tbl-stop"></table>
     <p class="note"><b>Note:</b> The stop is placed at 85% of Vest's 3% daily limit on the baseline position. A false stop is one where the price recovers to entry within an hour. Source: Vest minute data, 28 September to 10 November 2026.</p>
   </div>
-  <p><strong>The stop-market order is the only rule that protects the account.</strong> The three alternatives reduce false exits from about a third to about a quarter, but each one waits before selling. With the hard limit only 5.5 bp beyond the stop, that delay is what allows the account to be breached. The stop-limit order remained unfilled as the price kept falling and reached the hard limit in 24% of cases. The one-minute close allowed the price to pass the hard limit 62% of the time, and the five-minute close 82% of the time. A false stop costs one day of trading, whereas a breach costs the whole account. The stop-market order is therefore retained, and the cost of wicks is already included in every result as part of the daily-limit cost in Section 6.2.</p>
+  <p><strong>The stop-market order is the only rule that protects the account.</strong> The three alternatives reduce false exits from about a third to about a quarter, but each of them waits before selling, and with the hard limit only 5.5 bp beyond the stop it is precisely that delay that allows the account to be breached: the stop-limit order remained unfilled as the price kept falling and reached the hard limit in 24% of cases, while the one-minute close let the price pass the limit 62% of the time and the five-minute close 82% of the time. Since a false stop costs one day of trading whereas a breach costs the whole account, the stop-market order is retained, and the cost of wicks is already included in every result as part of the daily-limit cost in Section 6.2.</p>
 
-  <h2>6.6 Time of Day</h2>
-  <p>Trading activity varies through the day, and this affects two decisions: when to open an account and when to adjust the hedge. Figure 21 shows the average one-minute price move on Vest by hour of the New York day. Figure 22 shows how much the price gap between Vest and Hyperliquid moves by hour. That gap is the one risk the hedge cannot remove.</p>
+  <h2>6.6 Does the Time of Day Matter?</h2>
+  <p>Trading activity varies a great deal through the day, which affects two decisions in particular, when to open an account and when to adjust the hedge. Figure 21 shows the average one-minute price move on Vest by hour of the New York day, and Figure 22 shows how much the price gap between Vest and Hyperliquid moves by hour, which matters because that gap is the one risk the hedge cannot remove.</p>
   <figure>
     <p class="ft">Figure 21. Average one-minute price move by hour, Vest Nasdaq 100</p>
     <div class="chart" id="c-volh"></div>
@@ -1162,17 +1161,17 @@ ol.events li{margin:0 0 6px}
     <div class="chart" id="c-bash"></div>
     <figcaption><b>Note:</b> Standard deviation of five-minute changes in the gap, New York time. Source: paired five-minute Vest and Hyperliquid prices.</figcaption>
   </figure>
-  <p>The two measures peak at different times. Prices move most just after the 9:30 open. The first fifteen minutes average 7.7 bp a minute, about three times the 2 to 2.5 bp of the overnight hours, and the 9:00 to 11:00 window carries a quarter of the day's volume. The gap between the exchanges rises only slightly at the open. It moves most at 17:00 New York time, when the Nasdaq futures market takes its daily break and trading on Vest almost stops. The four rules below each leave expected profit unchanged and reduce the risk of a poor fill or an early stop:</p>
+  <p>The two measures peak at different times. Prices move most just after the 9:30 open, when the first fifteen minutes average 7.7 bp a minute, about three times the 2 to 2.5 bp of the overnight hours, and the 9:00 to 11:00 window carries a quarter of the day's volume, whereas the gap between the exchanges rises only slightly at the open and moves most at 17:00 New York time, when the Nasdaq futures market takes its daily break and trading on Vest almost stops. Four rules follow from this, each leaving expected profit unchanged while reducing the risk of a poor fill or an early stop:</p>
   <ul class="plain">
     <li><strong>Avoid opening accounts or resizing the hedge in the first hour after 9:30,</strong> when a new position is more likely to hit its daily stop on the first move.</li>
     <li><strong>Keep the hedge unchanged around 17:00 New York time,</strong> when the gap between exchanges is least stable.</li>
     <li><strong>Track Vest's daily reset at 20:00 New York time,</strong> when the daily loss limit restarts and the daily stop can be re-entered.</li>
     <li><strong>Plan around Friday:</strong> Vest reduces index leverage from 16:00 and locks the market from 17:00 until Sunday evening, so positions are closed before then.</li>
   </ul>
-  <p>Scheduled news requires the same care as the open. Inflation and employment data at 8:30 and Federal Reserve decisions at 14:00 cause short spikes that hourly averages smooth over. The effect of these rules on returns is still to be simulated.</p>
+  <p>Scheduled news calls for the same care as the open, because inflation and employment data at 8:30 and Federal Reserve decisions at 14:00 cause short spikes that hourly averages smooth over, although the effect of these rules on returns is still to be simulated.</p>
 
-  <h2>6.7 Position Sizing Within the Day</h2>
-  <p>The daily loss limit is the largest single cost (Section 6.2), so the natural question is whether a smarter sizing rule could recover part of it. Theory limits what sizing can achieve. For an account whose profit has no trend, the optional stopping theorem implies that no sizing rule changes the probability of reaching the target before the loss limit. A sizing rule can therefore change only three things: how quickly the account resolves, the trading costs, and how often the daily stop forces an exit near an intraday low that later recovers.</p>
+  <h2>6.7 Can Smarter Sizing Recover Some of the Cost?</h2>
+  <p>Since the daily loss limit is the largest single cost (Section 6.2), the natural question is whether a smarter sizing rule could recover part of it, and theory sets a clear limit on what sizing can achieve. For an account whose profit has no trend, the optional stopping theorem implies that no sizing rule changes the probability of reaching the target before the loss limit, so a sizing rule can affect only three things: how quickly the account resolves, how much it costs to trade, and how often the daily stop forces an exit near an intraday low that later recovers.</p>
   <p>I tested two rules against the fixed-size baseline. Under the risk-budget rule, which follows the logic of constant proportion portfolio insurance, the position shrinks in proportion to the room left before the daily stop, down to a floor of 25% or 50% of full size, and returns to full size at the daily reset. Under the time-of-day rule, the position is scaled by the hourly volatility profile, from 0.5 to 1.5 times full size, so that the dollar risk in each hour is roughly constant. In both rules the hedge is resized with the position, so the hedge ratio is unchanged, and both legs are rebalanced whenever the target moves by more than 10% of full size, paying planned-trade costs. Each rule was simulated on the same 5,000 account lives as the baseline, on the main sample and on the holdout, so every difference in Table 12 comes from the rule and none from the price paths.</p>
   <div class="tbl">
     <p class="tt">Table 12. Profit per account under each sizing rule</p>
@@ -1187,8 +1186,8 @@ ol.events li{margin:0 0 6px}
     </table>
     <p class="note"><b>Note:</b> Profit and losing share are per account on the main sample, with mixed execution and all costs; 5,000 account lives per rule on identical price paths. Change is the paired difference from fixed size, plus or minus one standard error; holdout change is the same comparison on the holdout prices, where fixed size earns $56.7 per account. Source: Study 19, Appendix D.</p>
   </div>
-  <p><strong>The risk-budget rule with a 25% floor improves on fixed sizing in both samples.</strong> It adds $3.60 per account on the main sample, about four standard errors, which survives a Bonferroni adjustment for the three rules tested. It also lowers the share of losing accounts from 10.2% to 7.7% and adds $11.80 per account in the holdout. The pass rate barely changes, as optional stopping predicts, so the gain most likely comes from smaller losses on days when the price falls toward the daily stop and then recovers. The 50% floor gains in the holdout but loses $2.40 per account on the main sample, so the choice of floor matters, and only two floors were tested. Time-of-day scaling is clearly worse. Scaling the position up to 1.5 times in quiet hours raises the capital tied up from $3,282 to $4,415 per account and loses $13.80 per account, more than the protection at the open is worth.</p>
-  <p>The headline results keep fixed sizing. The gain is modest and was found after the main study was designed, so adopting it would mix the tested design with a later refinement. The risk-budget rule is instead part of the implementation plan (Section 10.5), where the paper-trading stage can confirm it on live prices. The simulator also works in hourly steps and cannot resize within an hour, so a live version may do slightly better around the open.</p>
+  <p><strong>The risk-budget rule with a 25% floor improves on fixed sizing in both samples.</strong> It adds $3.60 per account on the main sample, about four standard errors and enough to survive a Bonferroni adjustment for the three rules tested, while lowering the share of losing accounts from 10.2% to 7.7% and adding $11.80 per account in the holdout. The pass rate barely changes, as optional stopping predicts, which suggests that the gain comes from smaller losses on the days when the price falls toward the daily stop and then recovers. The 50% floor, by contrast, gains in the holdout but loses $2.40 per account on the main sample, so the choice of floor matters and only two floors were tested, while time-of-day scaling is clearly worse, since scaling the position up to 1.5 times in quiet hours raises the capital tied up from $3,282 to $4,415 per account and loses $13.80 per account, more than the protection at the open is worth.</p>
+  <p>The headline results keep fixed sizing, because the gain is modest and was found after the main study was designed, so adopting it would mix the tested design with a later refinement. The risk-budget rule instead forms part of the implementation plan (Section 10.5), where the paper-trading stage can confirm it on live prices, and since the simulator works in hourly steps and cannot resize within an hour, a live version may do slightly better around the open.</p>
 </section>
 
 
@@ -1196,9 +1195,9 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-capital" data-title="7. How Far Does It Scale?" hidden>
   <h1>7. How Far Does It Scale?</h1>
-  <p><strong>To about $150,000 of capital at roughly 11 percent a month, after which Vest's ten-account limit caps the strategy near $24,000 a month.</strong> Capital rather than account size is the binding constraint, so every choice here is ranked by return on capital: which evaluations to buy (Section 7.1), the baseline account (Section 7.2), the portfolio for each budget (Section 7.3) and its size against real wealth (Section 7.4).</p>
-  <h2>7.1 Capital Efficiency</h2>
-  <p>Capital efficiency, the profit earned per dollar of capital, determines which evaluations to buy. Figure 23 places each of the 57 evaluations at five position sizes by deployed capital and expected monthly profit per slot. A slot is one evaluation held at a time and replaced on closure.</p>
+  <p><strong>The strategy scales to about $150,000 of capital at roughly 11 percent a month, after which Vest's ten-account limit caps it near $24,000 a month.</strong> Because capital, not account size, is the binding constraint, every choice in this section is ranked by return on capital, from which evaluations to buy (Section 7.1) and the baseline account (Section 7.2) to the portfolio for each budget (Section 7.3) and its size against real wealth (Section 7.4).</p>
+  <h2>7.1 Which Evaluations Use Capital Best?</h2>
+  <p>Capital efficiency, the profit earned for each dollar of capital, determines which evaluations are worth buying. Figure 23 places each of the 57 evaluations, at five position sizes, by the capital it ties up and the monthly profit it earns per slot, where a slot is one evaluation held at a time and replaced as soon as it closes.</p>
   <figure>
     <p class="ft">Figure 23. Expected monthly profit per slot against deployed capital</p>
     <div class="ctrls"><div class="seg" id="seg-style"></div></div>
@@ -1206,7 +1205,7 @@ ol.events li{margin:0 0 6px}
     <div class="chart" id="c-pareto"></div>
     <figcaption id="pareto-note"></figcaption>
   </figure>
-  <p>Small one-step accounts use capital most efficiently. Larger evaluations earn more per slot but require disproportionately more capital, so return on capital falls along the frontier. The most efficient accounts are one-step evaluations with a 10% target, a 3% daily limit and an 80% share, at small sizes. Refining the five most efficient over position size, hedge size, withdrawal threshold and leverage gives <span class="dyn" id="n-cand"></span> configurations with <span class="dyn" id="n-paths"></span> account lives each (Figure 24).</p>
+  <p>Small one-step accounts use capital most efficiently, because larger evaluations earn more per slot but require disproportionately more capital, so return on capital falls steadily along the frontier. The most efficient accounts are one-step evaluations with a 10% target, a 3% daily limit and an 80% share at small sizes, and refining the five most efficient over position size, hedge size, withdrawal threshold and leverage produces <span class="dyn" id="n-cand"></span> configurations with <span class="dyn" id="n-paths"></span> account lives each (Figure 24).</p>
   <figure>
     <p class="ft">Figure 24. Return on capital against probability of loss, refined configurations</p>
     <div class="legend" id="lg-eff"></div>
@@ -1218,21 +1217,21 @@ ol.events li{margin:0 0 6px}
     <table id="tbl-eff"></table>
     <p class="note"><b>Note:</b> Hedge is a share of the theoretical ratio, and every row requests a payout when funded profit reaches $300. The $5,000 one-step evaluation is the same contract at half scale and gives the same results. Baseline in bold.</p>
   </div>
-  <p>Table 13 lists the efficient set for the $10,000 evaluation. It is concentrated at 0.75 times the theoretical hedge. Moving along it trades duration against loss probability: larger positions close faster and earn more per dollar of capital, at a slightly higher loss rate. Half the theoretical hedge reaches about 14% a month, but more than half of those accounts lose money.</p>
+  <p>Table 13 lists the efficient set for the $10,000 evaluation, which is concentrated at 0.75 times the theoretical hedge. Moving along the set trades the time an account takes against its chance of losing money, since larger positions close faster and earn more per dollar of capital at a slightly higher loss rate, and although half the theoretical hedge reaches about 14% a month, more than half of those accounts lose money.</p>
 
-  <h2>7.2 Baseline Strategy</h2>
-  <p>The baseline account is the building block of every optimal portfolio up to $25,000 (Section 7.3). It is the $10,000 one-step evaluation with the settings in Table 14.</p>
+  <h2>7.2 What Is the Baseline Account?</h2>
+  <p>The baseline account, which forms the building block of every optimal portfolio up to $25,000 (Section 7.3), is the $10,000 one-step evaluation with the settings in Table 14.</p>
   <div class="tbl">
     <p class="tt">Table 14. Baseline strategy specification and performance</p>
     <table id="tbl-plan2"></table>
     <p class="note"><b>Note:</b> Performance from 5,000 account lives under mixed execution unless stated.</p>
   </div>
-  <p>Other objectives select much worse strategies. Maximising the probability of passing selects a small position that takes about a month to close. Maximising profit per account selects the $50,000 evaluation, which needs about $15,000 of capital. Both return less than 2% a month on capital, against 11% for the baseline.</p>
+  <p>Choosing by return on capital matters, because the more obvious objectives select much worse strategies. Maximising the probability of passing selects a small position that takes about a month to close, and maximising profit per account selects the $50,000 evaluation, which needs about $15,000 of capital, so both end up returning less than 2% a month on capital against 11% for the baseline.</p>
 
-  <h2>7.3 Portfolio Construction</h2>
-  <p>A portfolio of configurations converts per-account results into a monthly return for a given budget. An investor can hold several evaluations at once, up to ten funded. For a capital budget \(B\) and a loss limit \(\bar{p}\), I choose integer holdings \(n_k\) of each eligible configuration \(k\) to solve</p>
+  <h2>7.3 How Many Accounts, and Which?</h2>
+  <p>Combining configurations into a portfolio turns per-account results into a monthly return for a given budget. Since an investor can hold several evaluations at once, up to ten funded, for a capital budget \(B\) and a loss limit \(\bar{p}\) I choose integer holdings \(n_k\) of each eligible configuration \(k\) to solve</p>
   <div class="math">\[ \begin{aligned} \max_{\{n_k\}} \quad & \sum_{k} n_k\,\pi_k \\ \text{subject to} \quad & \sum_{k} n_k K_k \le B, \\ & \sum_{k} n_k \le 10, \quad n_k \in \mathbb{Z}_{\ge 0}, \end{aligned} \tag{11} \]</div>
-  <p class="where">where \(\pi_k\) is expected real profit per trading day, \(K_k\) is deployed capital, and eligible configurations satisfy \(P(\text{loss}) \le \bar{p}\). Each solution is simulated over a 21-trading-day month. Table 15 reports the result for each budget and loss limit.</p>
+  <p class="where">where \(\pi_k\) is expected real profit per trading day, \(K_k\) is deployed capital and eligible configurations satisfy \(P(\text{loss}) \le \bar{p}\). Each solution is then simulated over a 21-trading-day month, and Table 15 reports the result for each budget and loss limit.</p>
   <div class="tbl">
     <p class="tt">Table 15. Expected monthly profit of the optimal portfolio</p>
     <table id="tbl-surface"></table>
@@ -1249,15 +1248,15 @@ ol.events li{margin:0 0 6px}
     <figcaption><b>Note:</b> Expected monthly profit of the optimal portfolio from equation (11), by capital (log scale) and loss limit. Source: simulated, mixed execution.</figcaption>
   </figure>
 
-  <p>The optimal portfolio earns about 11% a month across a wide range of budgets and loss limits. The solution barely changes between loss limits of 10% and 25%, because few efficient configurations fall in that range. No configuration meets a 5% limit, while a 60% limit admits half-hedged configurations that reach about 13% a month but produce losing months at small budgets. Return on capital stays close to 11% up to $150,000. <strong>Capacity is set by the ten-account limit.</strong> Above about $25,000 the limit forces larger evaluations into the portfolio, and at $250,000 the portfolio consists of ten of the largest evaluation, returning 9.7% a month. Figure 25 shows expected monthly profit by capital at a 25% loss limit, Figure 26 shows it across loss limits, and Table 16 lists the accounts held at each budget.</p>
+  <p>The optimal portfolio earns about 11% a month across a wide range of budgets and loss limits. The solution barely changes between loss limits of 10% and 25%, because few efficient configurations fall in that range, and while no configuration meets a 5% limit, a 60% limit admits half-hedged configurations that reach about 13% a month but produce losing months at small budgets. Return on capital stays close to 11% up to $150,000, beyond which <strong>capacity is set by the ten-account limit</strong>: above about $25,000 the limit forces larger evaluations into the portfolio, and at $250,000 the portfolio consists of ten of the largest evaluation, returning 9.7% a month. Figure 25 shows expected monthly profit by capital at a 25% loss limit, Figure 26 shows it across loss limits, and Table 16 lists the accounts held at each budget.</p>
   <div class="tbl">
     <p class="tt">Table 16. Optimal portfolio at a 25% loss limit</p>
     <table id="tbl-book"></table>
     <p class="note"><b>Note:</b> Monthly ranges assume independent accounts, opened at different times and in alternating directions. Accounts opened together in the same direction behave as one position: in a four-account test the standard deviation of profit was $331 for same-direction accounts against $195 for alternating ones. Vest's terms restrict misuse of multiple accounts.</p>
   </div>
 
-  <h2>7.4 Sizing Against Real Capital</h2>
-  <p>Kelly sizing converts expected value into a capital decision. Expected value shows whether a bet is worth taking, and the Kelly criterion (Kelly, 1956) gives the stake that maximises long-run growth of wealth. Here, wealth means the investor's real capital, never the simulated balance. Table 17 shows the real capital each strategy requires per account at half-Kelly.</p>
+  <h2>7.4 How Much Capital Should Be Committed?</h2>
+  <p>Expected value shows whether a bet is worth taking but not how much to put behind it, and the Kelly criterion (Kelly, 1956) answers the second question by giving the stake that maximises the long-run growth of wealth, where wealth here means the investor's real capital and never the simulated balance. Table 17 shows the real capital each strategy requires per account at half-Kelly.</p>
   <div class="tbl">
     <p class="tt">Table 17. Real capital needed per account at half-Kelly</p>
     <table>
@@ -1270,7 +1269,7 @@ ol.events li{margin:0 0 6px}
     </table>
     <p class="note"><b>Note:</b> Half-Kelly is half the growth-optimal stake, the usual choice when the outcome distribution is estimated. $10,000 one-step evaluation at a moderate position size. Source: Study 12, Appendix D.</p>
   </div>
-  <p><strong>The hedge's main effect is on capital.</strong> On random prices it leaves expected value unchanged. By removing most of the variance, however, it allows the same real capital to support about six times as many accounts at the same risk of ruin. This is why Section 5.6 targets return on capital.</p>
+  <p><strong>The hedge's main effect is on capital.</strong> On random prices it leaves expected value unchanged, but by removing most of the variance it allows the same real capital to support about six times as many accounts at the same risk of ruin, which is why Section 5.6 targets return on capital and not profit per account.</p>
 
 </section>
 
@@ -1279,11 +1278,11 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-robustness" data-title="8. Does It Hold Out of Sample?" hidden>
   <h1>8. Does It Hold Out of Sample?</h1>
-  <p><strong>Yes, in every test, including a holdout and a forward test on prices recorded after the strategy was fixed.</strong> The result avoids the three mistakes behind most too-good-to-be-true trading results, a strategy fitted to past prices, prices that were never tradeable and costs that were left out, because the value comes from the contract terms, the prices match my own fills and every measured cost is charged. Vest is new, so the sample is short, and the checks that follow are designed around exactly that weakness: a forward test that updates daily, the strategy run in calendar order, separate time periods, adverse scenarios, sensitivity to the main settings and formal tests for overfitting.</p>
-  <h2>8.1 Forward Test Since the Design Was Fixed</h2>
-  <p>The most direct evidence is the forward test at the top of this paper (Figures S1 and S2), which runs accounts back to back on prices recorded since 29 October 2026, the day after the strategy was fixed, and updates every day. Its counts change as accounts close, so they are reported there and nowhere else; what matters here is the shape, a hedged book that climbs in small steps while the same accounts without the hedge swing between lost fees and occasional large payouts.</p>
-  <h2>8.2 Performance in Time Order</h2>
-  <p>Running the strategy in time order on the actual price history produces the same steady results. The earlier results come from reshuffled trading days, which measure what a typical account earns. Here, accounts run back to back in calendar order instead. Each account starts on a real trading day and runs until it closes, the next account starts on the following day, and the direction alternates between long and short. Eight account slots were run this way, each starting on a different day.</p>
+  <p><strong>The result holds in every out-of-sample test, including a holdout and a forward test on prices recorded after the strategy was fixed.</strong> It avoids the three mistakes behind most too-good-to-be-true trading results, a strategy fitted to past prices, prices that were never tradeable and costs that were left out, because the value comes from the contract terms, the prices match my own fills and every measured cost is charged. Since Vest is new and the sample is therefore short, the checks that follow are designed around exactly that weakness, running from a forward test that updates daily and the strategy run in calendar order to separate time periods, adverse scenarios, sensitivity to the main settings and formal tests for overfitting.</p>
+  <h2>8.1 Has It Worked Since the Design Was Fixed?</h2>
+  <p>The most direct evidence is the forward test at the top of this paper (Figures S1 and S2), which runs accounts back to back on prices recorded since 29 October 2026, the day after the strategy was fixed, and updates every day. Because its counts change as accounts close, they are reported there and nowhere else, and what matters for this section is the shape of the result, a hedged book that climbs in small steps while the same accounts without the hedge swing between lost fees and occasional large payouts.</p>
+  <h2>8.2 Does It Hold When Run in Calendar Order?</h2>
+  <p>The earlier results come from reshuffled trading days, which measure what a typical account earns but not what running the strategy day after day would look like, so here the accounts run back to back on the actual price history in calendar order. Each account starts on a real trading day and runs until it closes, the next account starts on the following day with the opposite direction, and eight such account slots were run, each starting on a different day.</p>
   <figure>
     <p class="ft">Figure 27. Cumulative real profit of one account slot, run in time order on real prices</p>
     <div class="legend" id="lg-seq"></div>
@@ -1295,10 +1294,10 @@ ol.events li{margin:0 0 6px}
     <table id="tbl-seq"></table>
     <p class="note"><b>Note:</b> Drawdown is the largest fall from a previous high in cumulative profit. Source: as Figure 27.</p>
   </div>
-  <p><strong>Every hedged slot made money, and none fell more than $47 from its high.</strong> The unhedged slots ended anywhere between a loss of $1,365 and a gain of $984. This stability also explains the steady return on capital in Section 7.3. Each hedged account is a small, short position with little variation in outcome, so adding accounts adds profit in proportion until the ten-account limit binds. Table 18 summarises the eight slots.</p>
+  <p><strong>Every hedged slot made money, and none fell more than $47 from its high,</strong> while the same accounts without the hedge ended anywhere between a loss of $1,365 and a gain of $984. The same stability explains why return on capital stays steady across budgets in Section 7.3, because each hedged account is a small, short position with little variation in outcome, so adding accounts adds profit in proportion until the ten-account limit binds. Table 18 summarises the eight slots.</p>
 
-  <h2>8.3 Subperiod Analysis</h2>
-  <p>The hedged strategy made money in every period tested, including a period recorded after the strategy was fixed. The sample is split into training, validation and test periods, plus that holdout period, and each period is resampled only from its own trading days. With market orders, the hedged strategy earned $41 to $63 per account in all four periods, while the unhedged account ranged from −$53 to +$121. This held even though the holdout period was more than twice as volatile as the training period. Figure 28 shows each period.</p>
+  <h2>8.3 Does It Hold in Every Period?</h2>
+  <p>The hedged strategy made money in every period tested, including one recorded after the strategy was fixed. The sample is split into training, validation and test periods plus that holdout, with each period resampled only from its own trading days, and with market orders the hedged strategy earned $41 to $63 per account in all four periods while the unhedged account ranged from −$53 to +$121, a result that held even though the holdout was more than twice as volatile as the training period. Figure 28 shows each period.</p>
   <figure>
     <p class="ft">Figure 28. Real profit per account by subperiod</p>
     <div class="legend" id="lg-chrono"></div>
@@ -1306,24 +1305,24 @@ ol.events li{margin:0 0 6px}
     <figcaption><b>Note:</b> Market orders, all costs. Confidence intervals in Appendix C.</figcaption>
   </figure>
 
-  <h2>8.4 Stress Scenarios</h2>
+  <h2>8.4 What Would Break It?</h2>
   <div class="tbl">
     <p class="tt">Table 19. Real profit per account under adverse scenarios</p>
     <table id="tbl-stress"></table>
     <p class="note"><b>Note:</b> Each scenario modifies one input from the baseline (market orders, all measured costs). 2,000 account lives per scenario.</p>
   </div>
-  <p>Only failures in hedge execution turn the result negative. Two of the twelve scenarios produce negative expected profit: execution costs at three times the measured level, and 20 basis points of slippage on every hedge event. <strong>Both concern the speed and cost of hedge execution.</strong> Price gaps, a widening gap between the exchanges and price spikes on one exchange each reduce profit by only a few dollars per account. Table 19 lists all twelve scenarios.</p>
+  <p>Only failures in hedge execution turn the result negative. Of the twelve scenarios tested, the two that produce negative expected profit are execution costs at three times the measured level and 20 basis points of slippage on every hedge event, and <strong>both concern the speed and cost of hedge execution</strong>, whereas price gaps, a widening gap between the exchanges and price spikes on one exchange each reduce profit by only a few dollars per account. Table 19 lists all twelve scenarios.</p>
 
-  <h2>8.5 Parameter Sensitivity</h2>
-  <p>The baseline sits in a stable region of the parameter space. Figure 29 shows return on capital and the share of losing accounts for every combination of position size and hedge size on the $10,000 evaluation. Return rises with position size, and the loss rate is lowest near 75% of the theoretical hedge at every size.</p>
+  <h2>8.5 How Sensitive Is It to the Main Settings?</h2>
+  <p>The baseline sits in a stable region of the parameter space, as Figure 29 shows by mapping return on capital and the share of losing accounts across every combination of position size and hedge size on the $10,000 evaluation: return rises with position size, while the loss rate is lowest near 75% of the theoretical hedge at every size.</p>
   <figure>
     <p class="ft">Figure 29. Return on capital by position size and hedge size</p>
     <div class="chart" id="c-heat"></div>
     <figcaption><b>Note:</b> $10,000 one-step evaluation. Columns are position size and rows are the hedge as a share of the theoretical ratio. Each cell gives monthly return on capital, with the share of accounts that lose money in brackets; the baseline strategy is in bold.</figcaption>
   </figure>
 
-  <h2>8.6 Overfitting Checks</h2>
-  <p>Searching many settings will always find one that looks good, so the design limits how much was searched and tests what was. Every study's expected result was recorded before it ran (Appendix D.3) and the trading rule has no fitted parameters, while the settings that were compared, 16 stop and target levels, 12 entry-rule tests and three sizing rules, were judged after adjusting for the number of trials, using the deflated Sharpe ratio, the probability of backtest overfitting and a false-discovery-rate correction (Appendix C.5). No stop, target or entry setting survived, which is why the strategy uses none of them, and the one refinement that did, risk-budget sizing, was confirmed in the holdout before it entered the implementation plan.</p>
+  <h2>8.6 Could the Result Be Overfitted?</h2>
+  <p>Searching many settings will always find one that looks good, so the design limits how much was searched and then tests what was. Every study's expected result was recorded before it ran (Appendix D.3) and the trading rule has no fitted parameters, while the settings that were compared, 16 stop and target levels, 12 entry-rule tests and three sizing rules, were judged only after adjusting for the number of trials with the deflated Sharpe ratio, the probability of backtest overfitting and a false-discovery-rate correction (Appendix C.5). No stop, target or entry setting survived those adjustments, which is why the strategy uses none of them, and the one refinement that did survive, risk-budget sizing, was confirmed in the holdout before it entered the implementation plan.</p>
 </section>
 
 
@@ -1331,17 +1330,17 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-built" data-title="9. How It Was Built" hidden>
   <h1>9. How It Was Built</h1>
-  <p><strong>Each step of the analysis needed a tool that did not exist, so the tools were built as the work went.</strong> The minute prices, the research engine and the trading platform described below were not side projects; each one was built at the point where the analysis could not go further without it.</p>
-  <h2>9.1 Data the Market Did Not Provide</h2>
-  <p>Vest publishes hourly price history, but the stop-rule, timing and validation studies needed prices minute by minute, so the minute data comes from a recorder in my own trading software, which has captured Vest's public trade feed since August 2026. Those prices are checked against my own executed trades (Section 5.2), and the same recorder now feeds the daily forward test at the top of this paper.</p>
-  <h2>9.2 A Research Engine Built to Be Checked</h2>
-  <p>All of the analysis runs in a Python research package of 19 pre-registered studies, a lifecycle simulator that reproduces the closed-form value to the cent on idealised prices before any real price is used, and 44 automated tests covering the accounting, the account rules, the formulas and the fee schedules. Every number in this paper is read from a results file produced by that code, and the commands in Appendix E regenerate all of it.</p>
-  <h2>9.3 From Research to a Running System</h2>
-  <p>A strategy is only worth something if it can be run, so the Vest side sits on a trading platform I built for Vest accounts, Vest Autopilot. It runs strategies written in Pine Script or NinjaScript or sent as TradingView alerts, sizes every trade from the account's own loss limits through a risk kernel with 67 acceptance tests, manages stops on every price tick, re-reads the account before every live order, records each order's intent before sending it and freezes if an outcome is uncertain, with a kill switch that pauses entries and flattens paper positions. It runs unattended as a supervised Windows service with a watchdog, a Chrome companion and webhooks routed through Tailscale, and its core service of about 14,600 lines of Python carries 311 application tests. The Hyperliquid hedge is the piece still to be wired in, and it is the first step of the implementation plan (Section 10.5).</p>
-  <h2>9.4 Building With AI</h2>
-  <p>Both systems were built largely by directing AI coding agents from written specifications, with every change required to pass the test suites before it was kept: 378 tests on the platform and 44 on the research engine. The platform began as a written brief of about 17,000 characters setting out the objective, the safety constraints and the open-source projects to study, and the research followed the same pattern of specify, build, test and check. The judgement stayed human, deciding what to build, what to test and what to trust, while the agents supplied the speed, which is the combination this kind of work increasingly rewards.</p>
-  <h2>9.5 In Progress: Simultaneous Two-Leg Execution</h2>
-  <p><strong>The part being built now is the one the results depend on most: sending the Vest order and the Hyperliquid hedge together, as a single action.</strong> Every stress test points to the same weakness, since slow or slipping hedge execution is the only thing that turns the result negative (Section 8.4), so the next layer of the platform is a Python execution engine that fires both legs concurrently through each exchange's API, measures the gap between the two fills, and treats the pair as one position from the moment it is sent.</p>
+  <p><strong>Each step of the analysis needed a tool that did not exist, so the tools were built as the work went.</strong> The minute prices, the research engine and the trading platform described below were not side projects, since each was built at the point where the analysis could not go further without it.</p>
+  <h2>9.1 Where Did the Minute Data Come From?</h2>
+  <p>Vest publishes hourly price history, but the stop-rule, timing and validation studies needed prices minute by minute, so the minute data comes from a recorder in my own trading software that has captured Vest's public trade feed since August 2026. Those prices are checked against my own executed trades (Section 5.2), and the same recorder now feeds the daily forward test at the top of this paper.</p>
+  <h2>9.2 How Can the Numbers Be Checked?</h2>
+  <p>All of the analysis runs in a Python research package of 19 pre-registered studies, built around a lifecycle simulator that reproduces the closed-form value to the cent on idealised prices before any real price is used, and backed by 44 automated tests covering the accounting, the account rules, the formulas and the fee schedules. Every number in this paper is read from a results file produced by that code, and the commands in Appendix E regenerate all of it.</p>
+  <h2>9.3 How Is the Strategy Run?</h2>
+  <p>A strategy is only worth something if it can be run, so the Vest side sits on a trading platform I built for Vest accounts, Vest Autopilot. The platform runs strategies written in Pine Script or NinjaScript or sent as TradingView alerts, and it sizes every trade from the account's own loss limits through a risk kernel with 67 acceptance tests, manages stops on every price tick, re-reads the account before every live order, records each order's intent before sending it and freezes if an outcome is uncertain, with a kill switch that pauses entries and flattens paper positions. It runs unattended as a supervised Windows service with a watchdog, a Chrome companion and webhooks routed through Tailscale, and its core service of about 14,600 lines of Python carries 311 application tests. The Hyperliquid hedge is the piece still to be wired in, which makes it the first step of the implementation plan (Section 10.5).</p>
+  <h2>9.4 How Was It Built So Quickly?</h2>
+  <p>Both systems were built largely by directing AI coding agents from written specifications, with every change required to pass the test suites before it was kept, 378 tests on the platform and 44 on the research engine. The platform began as a written brief of about 17,000 characters setting out the objective, the safety constraints and the open-source projects to study, and the research followed the same pattern of specifying, building, testing and checking. The judgement stayed human, in deciding what to build, what to test and what to trust, while the agents supplied the speed, a combination that this kind of work increasingly rewards.</p>
+  <h2>9.5 What Is Being Built Now?</h2>
+  <p><strong>The part being built now is the one the results depend on most, namely sending the Vest order and the Hyperliquid hedge together as a single action.</strong> Every stress test points to the same weakness, since slow or slipping hedge execution is the only thing that turns the result negative (Section 8.4), so the next layer of the platform is a Python execution engine that fires both legs concurrently through each exchange's API, measures the gap between the two fills and treats the pair as one position from the moment it is sent.</p>
   <p>Most of the work lies in the cases where something goes wrong, because that is where a hedged strategy actually loses money, and the engine is being designed around them:</p>
   <ul class="plain">
     <li><strong>One leg fills and the other does not</strong>, for example when a post-only order is cancelled because the price moved; the engine must complete the hedge at once or unwind the filled leg, within a fixed limit on unhedged exposure.</li>
@@ -1350,7 +1349,7 @@ ol.events li{margin:0 0 6px}
     <li><strong>Disconnection or an exchange outage</strong>, covered by native stops on each venue and by reconciling positions against both exchanges on reconnect.</li>
     <li><strong>Latency at the moments that matter</strong>, a pass, a daily stop or a close, where the hedge must follow Vest within seconds and every delay is measured against the 20 basis point slippage limit of Section 8.4.</li>
   </ul>
-  <p>Building this, with its concurrency, exchange APIs, idempotent order handling and failure recovery, is the most direct way to turn the paper's main open risk into a measured number, and the paper-hedge stage of the implementation plan (Section 10.5) is designed to measure it.</p>
+  <p>Building this, with its concurrency, exchange APIs, idempotent order handling and failure recovery, is the most direct way to turn the paper's main open risk into a measured number, and the paper-hedge stage of the implementation plan (Section 10.5) is designed to measure exactly that.</p>
 </section>
 
 
@@ -1358,21 +1357,21 @@ ol.events li{margin:0 0 6px}
 
 <section class="page" id="p-questions" data-title="10. Risks and Recommendations" hidden>
   <h1>10. Risks and Recommendations</h1>
-  <p><strong>The risks that remain are contractual and operational, and each can be tested cheaply before serious capital is committed.</strong> Whether Vest's terms permit the strategy, whether payouts arrive and whether the hedge executes as modelled are the open questions; the limitations of the analysis, recommendations for an investor and for Vest, the next tests and a staged implementation plan follow.</p>
-  <h2>10.1 Open Risks</h2>
-  <p>The most important open risk is whether the strategy complies with Vest's terms. Vest's programme terms (updated 20 October 2026) restrict misuse of multiple accounts and of price differences between venues, and they give Vest discretion over payouts. An offsetting position on another exchange is a hedge on the account, which is distinct from trading the price difference between the exchanges; Section 6.2 shows that the gap contributes roughly nothing to profit. Vest nonetheless decides how its terms apply, so anyone acting on this analysis should read the current terms and consult Vest if unsure. This paper studies how the product is priced and is not a recommendation to trade it.</p>
-  <p>The paper assumes claims are paid, which matches Vest's documented process and my own funded accounts. A refused payout would cost at most the capital deployed to that account, about $3,255 in the baseline strategy, so removing the edge would require a refusal rate far above anything I have observed. In live execution, three findings would change the conclusion: live hedge orders slipping by more than about 20 basis points per trade, Vest limit orders rarely filling, or live accounts passing far less often than the simulated 28%. Each can be tested cheaply before committing meaningful capital, and Section 10.4 lists them as the next steps.</p>
-  <h2>10.2 Limitations</h2>
-  <p>The main limitation is that the hedge has not yet been traded live. Reaction time, partial fills and margin calls are therefore modelled, and the results are most sensitive to exactly these factors. The sample covers three months of hourly data on one main contract pair. The limit-order case assumes every resting order fills, and Vest's bid–ask spread on index markets is inferred from eleven stop fills. All results come from a single trading rule. Finally, claims are assumed to be paid in full, although Vest retains discretion under its terms, which also restrict misuse of multiple accounts.</p>
+  <p><strong>The risks that remain are contractual and operational, and each can be tested cheaply before serious capital is committed.</strong> Whether Vest's terms permit the strategy, whether payouts arrive and whether the hedge executes as modelled are the open questions, and the section sets them out together with the limitations of the analysis, recommendations for an investor and for Vest, the next tests and a staged plan for implementation.</p>
+  <h2>10.1 What Are the Open Risks?</h2>
+  <p>The most important open risk is whether the strategy complies with Vest's terms. Vest's programme terms, updated on 20 October 2026, restrict misuse of multiple accounts and of price differences between venues and give Vest discretion over payouts, and although an offsetting position on another exchange is a hedge on the account, distinct from trading the price difference between the exchanges, and Section 6.2 shows that the gap contributes roughly nothing to profit, Vest still decides how its terms apply. Anyone acting on this analysis should therefore read the current terms and consult Vest if unsure, since this paper studies how the product is priced and is not a recommendation to trade it.</p>
+  <p>The paper assumes claims are paid, which matches Vest's documented process and my own funded accounts, and a refused payout would cost at most the capital deployed to that account, about $3,255 in the baseline strategy, so removing the edge would require a refusal rate far above anything I have observed. In live execution, three findings would change the conclusion, namely hedge orders slipping by more than about 20 basis points per trade, Vest limit orders rarely filling, or accounts passing far less often than the simulated 28%, and because each can be tested cheaply before committing meaningful capital, Section 10.4 lists them as the next steps.</p>
+  <h2>10.2 What Are the Limitations?</h2>
+  <p>The main limitation is that the hedge has not yet been traded live, so reaction time, partial fills and margin calls are modelled rather than observed, and the results are most sensitive to exactly these factors. The sample covers three months of hourly data on one main contract pair, the limit-order case assumes every resting order fills, Vest's bid–ask spread on index markets is inferred from eleven stop fills, and all results come from a single trading rule, while claims are assumed to be paid in full even though Vest retains discretion under its terms, which also restrict misuse of multiple accounts.</p>
 
-  <h2>10.3 Recommendations</h2>
-  <p><strong>For an investor, the case supports a small, staged commitment.</strong> The edge is real but capped near $24,000 a month, and its one material downside, slow or slipping hedge execution, can be measured with a single account and a paper hedge before any further capital is committed, with the baseline account, the risk-budget sizing rule and the timing rules of Section 6 as the starting configuration.</p>
+  <h2>10.3 What Should Be Done?</h2>
+  <p><strong>For an investor, the case supports a small, staged commitment.</strong> The edge is real but capped near $24,000 a month, and its one material downside, slow or slipping hedge execution, can be measured with a single account and a paper hedge before any further capital is committed, using the baseline account, the risk-budget sizing rule and the timing rules of Section 6 as the starting configuration.</p>
   <p><strong>For Vest, the cleanest fix is price.</strong> A fee near $180 would remove the value for a mechanical buyer, and a trailing loss limit or a time limit during the evaluation would narrow it, while leaving the economics against the typical customer, who already passes well below the break-even rate, unchanged (Section 3.3).</p>
-  <h2>10.4 Further Work</h2>
-  <p>The next steps focus on the hedge, because the results are most sensitive to it. The first is a two-week paper test of the hedge against live Vest limit events, to measure reaction time and slippage. The second is a recording of Vest's index order books, to measure spreads and fill rates. The third is an extension of the sample into a different volatility regime.</p>
+  <h2>10.4 What Comes Next?</h2>
+  <p>The next steps focus on the hedge, because the results are most sensitive to it, beginning with a two-week paper test of the hedge against live Vest limit events to measure reaction time and slippage, followed by a recording of Vest's index order books to measure spreads and fill rates, and finally an extension of the sample into a different volatility regime.</p>
 
-  <h2>10.5 Staged Implementation</h2>
-  <p>A live implementation should proceed in stages, with a test to pass before each stage, because the main uncertainty is operational rather than statistical.</p>
+  <h2>10.5 How Should It Be Implemented?</h2>
+  <p>A live implementation should proceed in stages, each with a test that must be passed before the next begins, because the main uncertainty is operational and not statistical:</p>
   <ol class="plain">
     <li><strong>Automated execution on Vest.</strong> Orders, stops, the daily stop rule and reconciliation of every fee and payment handled by software, so that the fixed trading rule is followed exactly, including the risk-budget sizing rule of Section 6.7.</li>
     <li><strong>Paper hedge.</strong> The Hyperliquid hedge run on paper against live Vest limit events for at least two weeks, to measure reaction time and slippage. The strategy fails if slippage approaches 20 bp per hedge trade (Section 8.4).</li>
@@ -1400,11 +1399,11 @@ ol.events li{margin:0 0 6px}
     <li>Bailey, D. H. and López de Prado, M. (2014). The deflated Sharpe ratio. <em>Journal of Portfolio Management</em>, 40(5), 94–107.</li>
     <li>Benjamini, Y. and Hochberg, Y. (1995). Controlling the false discovery rate. <em>Journal of the Royal Statistical Society B</em>, 57(1), 289–300.</li>
     <li>Broadie, M., Glasserman, P. and Kou, S. (1997). A continuity correction for discrete barrier options. <em>Mathematical Finance</em>, 7(4), 325–349.</li>
+    <li>DellaVigna, S. and Malmendier, U. (2006). Paying not to go to the gym. <em>American Economic Review</em>, 96(3), 694–719.</li>
     <li>Kelly, J. L. (1956). A new interpretation of information rate. <em>Bell System Technical Journal</em>, 35(4), 917–926.</li>
     <li>Lehoczky, J. P. (1977). Formulas for stopped diffusion processes with stopping times based on the maximum. <em>Annals of Probability</em>, 5(4), 601–607.</li>
     <li>Lo, A. W. and MacKinlay, A. C. (1990). An econometric analysis of nonsynchronous trading. <em>Journal of Econometrics</em>, 45(1–2), 181–211.</li>
     <li>Markowitz, H. (1952). Portfolio selection. <em>Journal of Finance</em>, 7(1), 77–91.</li>
-    <li>DellaVigna, S. and Malmendier, U. (2006). Paying not to go to the gym. <em>American Economic Review</em>, 96(3), 694–719.</li>
     <li>Track360 (2026). Prop trading industry statistics 2026: pass rates, payouts and market data. track360.io.</li>
     <li>Hyperliquid fee schedule and API; Vest markets page; Vest Capital documentation and terms, 28 October – 10 November 2026.</li>
   </ul>
