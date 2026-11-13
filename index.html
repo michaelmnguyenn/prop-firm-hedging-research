@@ -267,28 +267,27 @@ ol.events li{margin:0 0 6px}
       <li>If the account grows by 10% before it loses 6%, you pass and the firm funds it.</li>
       <li>From then on, the firm pays you 80% of the profit the funded account makes.</li>
     </ul>
-    <p>Buying and holding did not make me rich, so I moved on to what the gurus were actually selling and backtested thousands of opening-range breakouts, fair value gaps and inverse fair value gaps, each of which looked brilliant until costs were included. Somewhere around the thousandth backtest I remembered what my lecturers had been saying all along, that liquid markets are close to efficient and that an edge needs better information or faster technology, neither of which comes with a laptop and a Claude subscription, and I gave up.</p>
-    <p>Then, staring at yet another failed backtest, I noticed something about the evaluation itself. An evaluation is less a test of skill than a bet with a fixed price and two outcomes, a payout at the profit target or the loss of the fee at the loss limit, which makes it an option, and options can be priced. To price it fairly I handed the trading to my pet goldfish, which has exactly zero edge. The goldfish passes 37.5% of the time, and once the payouts from a funded account are averaged in, <strong>its $80 fee is worth about $180</strong>. Vest's pricing is not a mistake, since most of its customers do worse than the goldfish by over-trading and paying costs on every trade, but a buyer who trades as mechanically as the goldfish holds a contract worth more than twice its price.</p>
-    <p>That value is real but uneven, because the goldfish still loses its $80 in most evaluations and the expected profit comes from the few accounts that pass. The strategy evens it out by hedging each account with real money on Hyperliquid, where the Nasdaq 100 also trades as a perpetual future:</p>
+    <p>Buying and holding did not get me there, so I tried what the gurus were selling, thousands of opening-range breakouts, fair value gaps and inverse fair value gaps, and none of them survived trading costs. My lecturers had been teaching this all along: liquid markets are extremely efficient, and alpha from market microstructure needs an information or technology advantage that a student with a laptop does not have. So I gave up on beating the market and looked at the evaluation instead.</p>
+    <p>An evaluation is not really a test of skill. It is a bet with a fixed price and two outcomes, a payout at the profit target or a lost fee at the loss limit, which makes it an option, and options can be priced. To price it, I gave the trading to my pet goldfish, which has exactly zero edge. The goldfish passes 37.5% of the time, and once the payouts from a funded account are averaged in, <strong>its $80 fee is worth about $180</strong>. Vest still profits because most of its customers over-trade and do worse than the goldfish, but anyone who trades as mechanically as a goldfish is buying the contract for less than half its value.</p>
+    <p>That value is uneven, because most of it comes from the few accounts that pass, so each account is hedged with real money on Hyperliquid, where the Nasdaq 100 also trades:</p>
     <ul>
-      <li>Each account opens an $82,000 Nasdaq position on Vest, long or short by the flip of a coin.</li>
-      <li>The opposite position is taken on Hyperliquid, sized only to the part of the Vest position that can become real cash, about 30 cents per dollar during the evaluation in theory and three quarters of that in practice.</li>
-      <li>When the account passes, the hedge is raised towards 80 cents per dollar, and when the account ends, both sides are closed.</li>
+      <li>Open an $82,000 Nasdaq position on Vest, long or short by the flip of a coin.</li>
+      <li>Take the opposite position on Hyperliquid, sized only to the part that can become real cash: about 22 cents per dollar during the evaluation, rising to 60 cents once the account passes.</li>
+      <li>Close both sides when the account ends.</li>
     </ul>
-    <p>Sized this way, each account pays roughly the same whether it passes or fails, which turns a lottery ticket into something much closer to a steady return.</p>
-    <p>Vest is new, so only about three months of prices exist to test on, and over that sample, after every fee, spread, delay and trading rule:</p>
+    <p>Each account then pays about the same whether it passes or fails, so a lottery ticket becomes a steady return. Vest is new and only three months of prices exist, but over that sample, after every fee, spread, delay and rule:</p>
     <ul>
-      <li>about half of the theoretical value survives, roughly $50 per account;</li>
-      <li>that comes to <strong>about 11 percent a month on the capital tied up</strong>, until Vest's limit of ten funded accounts caps the strategy near $24,000 a month;</li>
-      <li>the result holds through sensitivity analysis and stress tests, and turns negative only if hedge orders fill badly or arrive late, or if Hyperliquid withdraws the fee discount on the Nasdaq contract.</li>
+      <li>profit is about $50 per account, half the theoretical value;</li>
+      <li>that is <strong>about 11 percent a month on the capital tied up</strong>, capped near $24,000 a month by Vest's ten-account limit;</li>
+      <li>the result survives sensitivity and stress tests, and fails only if hedge orders fill badly or late, or if Hyperliquid ends its fee discount on the Nasdaq contract.</li>
     </ul>
-    <p>Since 29 October, when I froze the design, the strategy has also been running forward on prices it has never seen, shown below and updated daily. Whether it works with real orders comes down to execution, so I am now building a Python engine that:</p>
+    <p>Since 29 October, when I froze the design, the strategy has also run forward on new prices, shown below and updated daily. The last test is real orders, so I am now building a Python engine that:</p>
     <ul>
       <li>sends the Vest order and the Hyperliquid hedge at the same moment;</li>
       <li>keeps the delay between them as short as possible;</li>
       <li>handles what can go wrong, such as one side filling without the other or an exchange disconnecting mid-trade.</li>
     </ul>
-    <p>I set out to beat the quants in Sydney and ended up running something closer to a very small hedge fund, one whose only edge comes from a goldfish and a careful reading of a prop firm's rules, which means the quants in Sydney can keep their alpha, for now.</p>
+    <p>So the quants in Sydney can keep their alpha. I never found any of my own; I just found a prop firm selling an option for less than it was worth, and built a very small hedge fund around it.</p>
   </div>
 
   <h2>How Has It Performed Since the Design Was Fixed?</h2>
