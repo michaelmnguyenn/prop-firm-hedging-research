@@ -260,34 +260,34 @@ ol.events li{margin:0 0 6px}
 
   <div class="abstract">
     <h2>Abstract</h2>
-    <p>Last month, after one too many YouTube trading gurus posting payout screenshots in front of rented Lamborghinis, I decided I was going to become a quant. I was fairly sure I understood markets, I had enough Python to write a backtest and a fresh week of Claude usage, and as far as I was concerned the quants in Sydney were about to watch their alpha disappear once I was done with these markets. The plan was simple: markets reward people who buy and hold, prop firms lend you leverage on a small deposit, so I would buy and hold my way through a prop-firm evaluation and collect the payout.</p>
-    <p>For anyone the gurus have not reached yet, a prop-firm evaluation works in three steps:</p>
+    <p>Last month, after watching too many YouTube trading gurus post payout screenshots in front of rented Lamborghinis, I decided I wanted to become a quant. I thought I understood financial markets well, I knew enough Python to write a backtest, and I had a fresh week of Claude usage, so as far as I was concerned the quants in Sydney were about to lose their alpha once I was done with these markets. The plan was simple. Markets reward people who buy and hold, and prop firms give you leverage on a small deposit, so surely I could buy and hold my way through a prop-firm evaluation and collect the payout.</p>
+    <p>If you have not come across one before, a prop-firm evaluation works like this:</p>
     <ul>
-      <li>You pay a fee, $80 at Vest Capital, for an account holding $10,000 of simulated money.</li>
+      <li>You pay a fee, $80 at Vest Capital, for an account with $10,000 of simulated money.</li>
       <li>If the account grows by 10% before it loses 6%, you pass and the firm funds it.</li>
       <li>From then on, the firm pays you 80% of the profit the funded account makes.</li>
     </ul>
-    <p>Buying and holding did not get me there, so I tried what the gurus were selling, thousands of opening-range breakouts, fair value gaps and inverse fair value gaps, and none of them survived trading costs. My lecturers had been teaching this all along: liquid markets are extremely efficient, and alpha from market microstructure needs an information or technology advantage that a student with a laptop does not have. So I gave up on beating the market and looked at the evaluation instead.</p>
-    <p>An evaluation is not really a test of skill. It is a bet with a fixed price and two outcomes, a payout at the profit target or a lost fee at the loss limit, which makes it an option, and options can be priced. To price it, I gave the trading to my pet goldfish, which has exactly zero edge. The goldfish passes 37.5% of the time, and once the payouts from a funded account are averaged in, <strong>its $80 fee is worth about $180</strong>. Vest still profits because most of its customers over-trade and do worse than the goldfish, but anyone who trades as mechanically as a goldfish is buying the contract for less than half its value.</p>
-    <p>That value is uneven, because most of it comes from the few accounts that pass, so each account is hedged with real money on Hyperliquid, where the Nasdaq 100 also trades:</p>
+    <p>Buying and holding was not enough, so I moved on to the strategies the gurus were teaching and backtested thousands of opening-range breakouts, fair value gaps and inverse fair value gaps. None of them made money after trading costs. Eventually I accepted what my lecturers had been saying all along: liquid markets are extremely efficient, and finding alpha in market microstructure needs an information or technology advantage, which I did not have. So I stopped trying to beat the market and started looking at the evaluation itself.</p>
+    <p>An evaluation is not really a test of skill. You pay a fixed price and there are only two outcomes: you reach the profit target and get paid, or you hit the loss limit and lose the fee. That makes it an option, and options can be priced. To price it, I imagined handing the account to my pet goldfish, which trades with exactly zero edge. The goldfish would still pass 37.5% of the time, and once you include what a funded account pays out on average, <strong>its $80 fee is worth about $180</strong>. Vest still makes money because most of its customers over-trade and do worse than the goldfish, but anyone who trades as mechanically as a goldfish is paying less than half of what the evaluation is worth.</p>
+    <p>The problem is that most of that value comes from the few accounts that pass, so most accounts still lose the $80. To smooth this out, I hedge each account with real money on Hyperliquid, where the Nasdaq 100 also trades:</p>
     <ul>
-      <li>Open an $82,000 Nasdaq position on Vest, long or short by the flip of a coin.</li>
-      <li>Take the opposite position on Hyperliquid, sized only to the part that can become real cash: about 22 cents per dollar during the evaluation, rising to 60 cents once the account passes.</li>
-      <li>Close both sides when the account ends.</li>
+      <li>Open an $82,000 Nasdaq position on Vest, choosing long or short with a coin flip.</li>
+      <li>Open the opposite position on Hyperliquid, sized only to the part of the Vest position that can turn into real cash: about 22 cents per dollar during the evaluation and 60 cents once the account passes.</li>
+      <li>Close both positions when the account ends.</li>
     </ul>
-    <p>Each account then pays about the same whether it passes or fails, so a lottery ticket becomes a steady return. Vest is new and only three months of prices exist, but over that sample, after every fee, spread, delay and rule:</p>
+    <p>Each account then makes about the same whether it passes or fails, which turns a lottery ticket into a steady return. Vest is new, so I only have three months of prices to test on, but over that period, after all fees, spreads, delays and rules:</p>
     <ul>
-      <li>profit is about $50 per account, half the theoretical value;</li>
-      <li>that is <strong>about 11 percent a month on the capital tied up</strong>, capped near $24,000 a month by Vest's ten-account limit;</li>
-      <li>the result survives sensitivity and stress tests, and fails only if hedge orders fill badly or late, or if Hyperliquid ends its fee discount on the Nasdaq contract.</li>
+      <li>each account makes about $50, roughly half its theoretical value;</li>
+      <li>that works out to <strong>about 11 percent a month on the capital used</strong>, up to about $24,000 a month, because Vest allows only ten funded accounts;</li>
+      <li>the result holds up in sensitivity and stress tests, and only fails if hedge orders fill badly or late, or if Hyperliquid removes the fee discount on the Nasdaq contract.</li>
     </ul>
-    <p>Since 29 October, when I froze the design, the strategy has also run forward on new prices, shown below and updated daily. The last test is real orders, so I am now building a Python engine that:</p>
+    <p>I froze the design on 29 October, and since then the strategy has been running on new prices it has never seen, with the results below updated daily. The next step is trading it with real orders, so I am building a Python program that:</p>
     <ul>
-      <li>sends the Vest order and the Hyperliquid hedge at the same moment;</li>
+      <li>sends the Vest order and the Hyperliquid hedge at the same time;</li>
       <li>keeps the delay between them as short as possible;</li>
-      <li>handles what can go wrong, such as one side filling without the other or an exchange disconnecting mid-trade.</li>
+      <li>deals with things going wrong, like one order filling without the other or an exchange disconnecting mid-trade.</li>
     </ul>
-    <p>So the quants in Sydney can keep their alpha. I never found any of my own; I just found a prop firm selling an option for less than it was worth, and built a very small hedge fund around it.</p>
+    <p>So the quants in Sydney can keep their alpha. I never found any of my own. I just found a prop firm selling an option for less than it was worth, and built a very small hedge fund around it.</p>
   </div>
 
   <h2>How Has It Performed Since the Design Was Fixed?</h2>
