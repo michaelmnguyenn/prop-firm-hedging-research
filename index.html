@@ -2011,6 +2011,20 @@ ol.events li{margin:0 0 6px}
     <p class="note"><b>Note:</b> Sum of eight two-account books at a $45,000 position, hourly, with open accounts marked to market as in Figure S1.</p>
   </figure>
 
+  <p><strong>Staying hedged needs about 40% fewer evaluations than letting the other account keep running, at the cost of some total profit.</strong> When one account hits its daily stop and the other keeps running unhedged, more accounts reach their limits, so the book buys more evaluations and earns less on each. Table F6 compares the two rules with ATR sizing at 0.42 day ranges, alongside a single account.</p>
+  <div class="tbl">
+    <p class="tt">Table F6. Accounts needed under each rule, ATR sizing at 0.42 day ranges</p>
+    <table>
+      <thead><tr><th class="l">Rule</th><th>Accounts open at once</th><th>Evaluations bought in six months</th><th>Profit per account</th><th>Total profit in six months</th><th>Losing six months</th><th>Capital</th><th>Chronological backtest, total</th></tr></thead>
+      <tbody>
+        <tr><td class="l">One account at a time</td><td>1</td><td>18</td><td>$53</td><td>$942</td><td>30%</td><td>$1,440</td><td>−$118</td></tr>
+        <tr><td class="l">Pair, keep running</td><td>2</td><td>33</td><td>$72</td><td>$2,388</td><td>9%</td><td>$1,440</td><td>$1,584</td></tr>
+        <tr><td class="l"><b>Pair, stay hedged</b></td><td><b>2</b></td><td><b>19</b></td><td><b>$103</b></td><td><b>$1,983</b></td><td><b>6%</b></td><td><b>$880</b></td><td><b>$1,253</b></td></tr>
+      </tbody></table>
+    <p class="note"><b>Note:</b> Bootstrap of 4,000 books of 26 weeks on the main sample; the chronological backtest is the average of eight books over 30 July to 28 October 2026. At a fixed $45,000 the keep-running pair earns only $41 per account with 18% of books losing, so ATR sizing matters more for that rule.</p>
+  </div>
+  <p>The stay-hedged pair buys about as many evaluations as a single account (19 against 18) while earning roughly twice as much on each and losing money in far fewer books. The keep-running pair earns about $400 more in six months, but only by buying 14 more evaluations, which is $31 less per account, a higher chance of a losing period and more capital. For the fewest accounts per dollar of profit, staying hedged is the better rule.</p>
+
   <h2>F.6 What Would This Mean in Practice?</h2>
   <p><strong>Hedging Vest with Vest reaches the full expected value of the evaluation with almost no capital, but it cannot raise that value, and it is prohibited.</strong> The analysis leads to five points:</p>
   <ul>
@@ -2037,7 +2051,7 @@ ol.events li{margin:0 0 6px}
       <tr><td class="w">Pass probabilities</td><td class="l"><code>results/barrier/R10.json</code></td></tr>
       <tr><td class="w">Adverse scenarios</td><td class="l"><code>results/barrier/R13.json</code></td></tr>
       <tr><td class="w">Periods, markets, calibration, overfitting, sensitivity</td><td class="l"><code>results/barrier/R14.json</code></td></tr>
-      <tr><td class="w">Hedging Vest accounts with each other (Appendix F)</td><td class="l"><code>results/barrier/R22_pair.json</code>, <code>R22b_pair_atr.json</code></td></tr>
+      <tr><td class="w">Hedging Vest accounts with each other (Appendix F)</td><td class="l"><code>results/barrier/R22_pair.json</code>, <code>R22b_pair_atr.json</code>, <code>R22c_pair_accounts.json</code></td></tr>
       <tr><td class="w">Fees</td><td class="l"><code>barrier/fees.py</code></td></tr>
     </tbody></table></div>
   <h2>Commands</h2>
