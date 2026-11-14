@@ -2025,7 +2025,40 @@ ol.events li{margin:0 0 6px}
   </div>
   <p>The stay-hedged pair buys about as many evaluations as a single account (19 against 18) while earning roughly twice as much on each and losing money in far fewer books. The keep-running pair earns about $400 more in six months, but only by buying 14 more evaluations, which is $31 less per account, a higher chance of a losing period and more capital. For the fewest accounts per dollar of profit, staying hedged is the better rule.</p>
 
-  <h2>F.6 What Would This Mean in Practice?</h2>
+  <h2>F.6 Which Account and Leverage Should Be Used?</h2>
+  <p><strong>The $10,000-style 1-Step evaluation with a 10% target, a 3% daily limit and an 80% split, held at 4.5 to 6 times leverage, gives the most profit per account with the lowest risk, and the $50,000 version of the same account does it with five times fewer accounts.</strong> Every Vest evaluation was run as a stay-hedged pair at leverage from 2 to 12 times, and the strongest settings were then rerun on random-walk prices, the chronological backtest and the forward test. Random-walk prices remove the luck of the three-month sample, so they show which rules are better by construction.</p>
+  <div class="tbl">
+    <p class="tt">Table F7. Best leverage for each type of evaluation, per stay-hedged pair</p>
+    <table>
+      <thead><tr><th class="l">Evaluation</th><th>Leverage</th><th>Profit a week, random walk</th><th>Profit per account, random walk</th><th>Accounts used a week</th><th>Losing six months, random walk</th><th>Cash needed</th><th>Profit a week, real sample</th><th>Backtest books profitable</th></tr></thead>
+      <tbody>
+        <tr><td class="l"><b>1-Step, 10% target, 3% daily limit</b></td><td><b>4.5×</b></td><td><b>$80</b></td><td><b>$85</b></td><td><b>0.8</b></td><td><b>4%</b></td><td><b>$880</b></td><td><b>$81</b></td><td><b>8 of 8</b></td></tr>
+        <tr><td class="l">1-Step, 10% target, 3% daily limit</td><td>6×</td><td>$87</td><td>$83</td><td>1.0</td><td>5%</td><td>$1,040</td><td>$84</td><td>8 of 8</td></tr>
+        <tr><td class="l">1-Step, 10% target, 4% daily limit</td><td>8×</td><td>$123</td><td>$58</td><td>2.0</td><td>9%</td><td>$2,390</td><td>$102</td><td>4 of 8</td></tr>
+        <tr><td class="l">1-Step, 10% target, no daily limit</td><td>6×</td><td>$102</td><td>$28</td><td>3.2</td><td>18%</td><td>$3,060</td><td>$94</td><td>8 of 8</td></tr>
+        <tr><td class="l">2-Step, 10% then 5%</td><td>4.5×</td><td>$47</td><td>$51</td><td>0.8</td><td>12%</td><td>$595</td><td>$51</td><td>8 of 8</td></tr>
+        <tr><td class="l">1-Step, 20% target, 3% daily limit</td><td>4.5×</td><td>$29</td><td>$46</td><td>0.5</td><td>19%</td><td>$600</td><td>$30</td><td>7 of 8</td></tr>
+        <tr><td class="l">Instant funding</td><td>any</td><td colspan="7" class="l">Loses money at every leverage, because the fee equals the loss limit and only 95% of profit is paid</td></tr>
+      </tbody></table>
+    <p class="note"><b>Note:</b> All rows at the $10,000 size with an 80% split; the same rules at $5,000, $25,000 or $50,000 scale every dollar figure in proportion. Profit a week is for one pair of accounts after fees and Vest trading costs. Random walk: 2,000 books of 26 weeks on driftless prices with the sample's volatility. Real sample: 4,000 bootstrapped books. Backtest: eight books in chronological order, 30 July to 28 October 2026. Full sweep of 57 evaluations at six leverage levels in <code>R22e_pair_sweep.json</code>.</p>
+  </div>
+  <p>Three patterns decide the choice:</p>
+  <ul>
+    <li><strong>A looser daily limit buys speed, not value.</strong> The 4% and no-limit versions finish accounts two to four times faster and earn more a week, but each account earns a third to two thirds as much, so the extra weekly profit comes from buying two to three evaluations a week, with two to four times the cash and the chance of a losing period.</li>
+    <li><strong>A higher target lowers the pass rate more than it raises the payout.</strong> The 20% target and the 2-Step path both earn less per account and per week.</li>
+    <li><strong>Leverage has a ceiling set by the daily limit.</strong> With a 3% daily limit, profit holds between 3 and 6 times leverage and collapses at 8 times, when the daily stop is hit almost every day.</li>
+  </ul>
+  <p><strong>The recommended setup is therefore:</strong></p>
+  <ul>
+    <li><strong>Account:</strong> 1-Step, 10% target, 3% daily limit, 80% split. The 90% split costs 20% more in fees for a similar result.</li>
+    <li><strong>Size:</strong> $50,000 accounts, so that each pair earns about $390 a week on random-walk prices ($392 in the real sample and $454 in the backtest) and the number of accounts stays at about 0.8 a week per pair.</li>
+    <li><strong>Leverage:</strong> 4.5 times, a $225,000 position on a $50,000 account, or the ATR rule in F.4, which gives about 4.7 times on average.</li>
+    <li><strong>Rules:</strong> open both accounts at the 20:00 reset, close both when either reaches its daily stop, and replace any account that ends with a new one opposite the account still held.</li>
+    <li><strong>Cash:</strong> about $4,600 per pair covers the fees in 19 out of 20 six-month periods.</li>
+  </ul>
+  <p>The forward test has not yet confirmed any of this in cash. After 2.3 weeks every recommended book still shows fees paid and no payout received, and its profit comes only from valuing the open accounts, so the figures above rest on the bootstrap, the backtest and the random-walk check.</p>
+
+  <h2>F.7 What Would This Mean in Practice?</h2>
   <p><strong>Hedging Vest with Vest reaches the full expected value of the evaluation with almost no capital, but it cannot raise that value, and it is prohibited.</strong> The analysis leads to five points:</p>
   <ul>
     <li><strong>The ceiling is the barrier geometry.</strong> With no directional edge, an evaluation is worth what equation (F1) and Section 2 say it is worth, about $85 to $100 after Vest's costs, and no pairing, entry time or rule for the survivor changes that on random-walk prices.</li>
@@ -2051,7 +2084,7 @@ ol.events li{margin:0 0 6px}
       <tr><td class="w">Pass probabilities</td><td class="l"><code>results/barrier/R10.json</code></td></tr>
       <tr><td class="w">Adverse scenarios</td><td class="l"><code>results/barrier/R13.json</code></td></tr>
       <tr><td class="w">Periods, markets, calibration, overfitting, sensitivity</td><td class="l"><code>results/barrier/R14.json</code></td></tr>
-      <tr><td class="w">Hedging Vest accounts with each other (Appendix F)</td><td class="l"><code>results/barrier/R22_pair.json</code>, <code>R22b_pair_atr.json</code>, <code>R22c_pair_accounts.json</code></td></tr>
+      <tr><td class="w">Hedging Vest accounts with each other (Appendix F)</td><td class="l"><code>results/barrier/R22_pair.json</code>, <code>R22b_pair_atr.json</code>, <code>R22c_pair_accounts.json</code>, <code>R22e_pair_sweep.json</code>, <code>R22f_pair_validate.json</code></td></tr>
       <tr><td class="w">Fees</td><td class="l"><code>barrier/fees.py</code></td></tr>
     </tbody></table></div>
   <h2>Commands</h2>
