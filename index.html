@@ -1793,7 +1793,7 @@ ol.events li{margin:0 0 6px}
   <h3>Study 20. Hedging Vest accounts with each other</h3>
   <table class="reg"><tbody>
     <tr><th>Question</th><td>If one Vest evaluation were hedged with another in the opposite direction, how much expected value would survive, and does the market trend after a breach?</td></tr>
-    <tr><th>Method</th><td>A two-slot book engine on hourly Vest bars with Vest's rules and costs: one account, two coin-flip accounts, and opposite pairs with and without a stay-hedged rule; nine position sizes, four entry times, three pairings; session bootstrap, chronological backtest, forward test and driftless random-walk prices; survivor test against 200 shuffled orderings.</td></tr>
+    <tr><th>Method</th><td>A two-slot book engine on hourly Vest bars with Vest's rules and costs: one account, two coin-flip accounts, and opposite pairs with and without a stay-hedged rule; nine position sizes, ATR sizing at six levels, four entry times, three pairings; session bootstrap, chronological backtest, forward test and driftless random-walk prices; survivor test against 200 shuffled orderings.</td></tr>
     <tr><th>Finding</th><td>On random-walk prices every policy earns the same $85 to $99 per account. On the sample, the stay-hedged pair at $30,000 to $60,000 earns $85 to $100 per account with a 5% to 8% chance of a losing six months and $880 of capital, and collapses above $60,000. No momentum after a breach.</td></tr>
     <tr><th>Decision</th><td>Not adopted. Vest prohibits opposite positions across its own accounts (Appendix F).</td></tr>
     <tr><th>Limitation</th><td>Three months of prices; size and entry-time effects are not stable; the forward test is 2.3 weeks with no pair yet finished.</td></tr>
@@ -1881,6 +1881,12 @@ ol.events li{margin:0 0 6px}
   <div class="math">\[ P(\text{survivor passes}) = \frac{2D}{G + D} = \frac{1{,}200}{1{,}600} = 0.75 \tag{F1} \]</div>
   <p class="where">where \(D\) is the static loss limit ($600) and \(G\) is the profit target ($1,000).</p>
   <p>Each pair therefore produces 0.75 passes on average, the same as two independent evaluations at 37.5% each, which means pairing redistributes the outcomes and does not add expected value. What it changes is the distribution: a pair ends with no funded account 25% of the time, against 39% for two independent evaluations (0.625 × 0.625), and it does so with no hedge cost and almost no capital.</p>
+  <p><strong>The survivor is not left alone in the simulations: a new evaluation is bought straight away and opened opposite it at the same dollar size, so the book is back to a 1:1 hedge.</strong> With the survivor at +$600 and the new account at $0, the next move always ends in a pass and never in a breach:</p>
+  <ul>
+    <li>If the market rises another $400 of profit, the survivor passes and the new account sits at −$400, still inside its $600 limit.</li>
+    <li>If the market falls $1,000 of profit, the new account passes and the survivor sits at −$400, also still inside its limit.</li>
+  </ul>
+  <p>Each new fee therefore buys a pass at the next resolved move, but the account left behind starts the next round closer to its loss limit, so the expected passes per fee stay at the 37.5% of equation (F1). The replacement keeps the book hedged; it does not change the odds.</p>
 
   <h2>F.2 Does the Market Keep Trending After a Breach?</h2>
   <p><strong>Letting the survivor run in the hope that the move continues only adds value if a breach predicts further movement in the same direction, and the Nasdaq history shows no sign of that.</strong> The test takes every third hour of the main sample as a starting point, waits for the first move large enough to breach one account, and then records whether the price reaches the survivor's target before reversing to its loss limit. Shuffling the same hourly returns into random order keeps the size of every move but removes any trend or reversal, so the shuffled results show what chance alone produces.</p>
@@ -1962,7 +1968,26 @@ ol.events li{margin:0 0 6px}
     <p class="note"><b>Note:</b> Profit per evaluation bought, after fees and Vest trading costs, with the chance that a book run for 26 weeks finishes at a loss in brackets. Session bootstrap of the main sample, 3,000 books per cell. "Keep running" lets the other account trade on when one hits its daily stop; "stay hedged" closes both. On random-walk prices all three columns are $85 to $88 at both $45,000 and $82,000.</p>
   </div>
   <p>Between $30,000 and $60,000 the stay-hedged pair earns $85 to $100 per account with a 5% to 8% chance of a losing six months, close to the $85 to $99 that random-walk prices give and almost twice the $52 the Hyperliquid strategy keeps after costs. Above $60,000 the result collapses, because the daily limit falls below about 0.3 of a day's range and the pair spends its time being stopped and reopened. The single-account column swings from $0 to $68 between neighbouring sizes, while on random-walk prices it does not move at all, which shows how strongly three months of real prices can favour one setting over the next by chance. A setting chosen from this table would therefore be fitted to the sample, so the conclusion drawn from it is the range that works, not the best single size.</p>
-  <p>Entry time matters less than size. Opening the stay-hedged pair at 09:00 New York time earned $124 per account in the bootstrap, against $100 at the 20:00 reset, $116 at 02:00 and $93 at 10:00. Random-walk prices have no time of day, so this difference can only come from the sample's intraday pattern, and it has not been tested out of sample, so the reset is kept as the entry. Vest's trading costs of 0.78 bp per forced fill are deducted from the simulated balance and lower profit by about $11 per account on random-walk prices, compared with about $20 of real Hyperliquid costs per account in the main strategy.</p>
+  <p><strong>Sizing each pair from recent volatility keeps the daily limit at a steady distance and held up best out of sample, while entry time was only spot-checked.</strong> A fixed $45,000 position is 4.5 times the account's $10,000 of simulated capital, and the $82,000 position of the main strategy is 8.2 times, but leverage on its own says little, because what decides how often the daily limit is hit is the position's size relative to how far the Nasdaq is moving at the time. The ATR rule therefore sizes each pair when it opens so that the $300 daily limit equals a set number of trailing day ranges, using the average high-low range of the previous five sessions:</p>
+  <div class="math">\[ N = \frac{L_{\text{day}}}{k \times \text{ATR}_5} \tag{F2} \]</div>
+  <p class="where">where \(N\) is the position, \(L_{\text{day}}\) is the daily loss limit ($300), \(k\) is the daily limit in day ranges, and \(\text{ATR}_5\) is the trailing five-session range in percent. A replacement account takes the same size as the account it hedges, so the pair stays 1:1.</p>
+  <div class="tbl">
+    <p class="tt">Table F5. Fixed size against ATR sizing, stay-hedged pairs</p>
+    <table>
+      <thead><tr><th class="l">Sizing</th><th>Average position</th><th>Leverage</th><th>Bootstrap, per account</th><th>Losing six months</th><th>Chronological backtest, per account</th><th>Forward test, per account</th><th>One account alone, bootstrap</th></tr></thead>
+      <tbody>
+        <tr><td class="l">Fixed $30,000</td><td>$30,000</td><td>3.0×</td><td>$86</td><td>5%</td><td>$55</td><td>$73</td><td>$36</td></tr>
+        <tr><td class="l">Fixed $45,000</td><td>$45,000</td><td>4.5×</td><td>$100</td><td>5%</td><td>$116</td><td>$58</td><td>$27</td></tr>
+        <tr><td class="l">Fixed $60,000</td><td>$60,000</td><td>6.0×</td><td>$86</td><td>8%</td><td>$110</td><td>$45</td><td>$2</td></tr>
+        <tr><td class="l">ATR, 0.35 day ranges</td><td>$56,400</td><td>5.6×</td><td>$71</td><td>15%</td><td>$116</td><td>$90</td><td>$6</td></tr>
+        <tr><td class="l"><b>ATR, 0.42 day ranges</b></td><td><b>$47,000</b></td><td><b>4.7×</b></td><td><b>$103</b></td><td><b>6%</b></td><td><b>$138</b></td><td><b>$151</b></td><td><b>$53</b></td></tr>
+        <tr><td class="l">ATR, 0.5 day ranges</td><td>$39,300</td><td>3.9×</td><td>$85</td><td>8%</td><td>$42</td><td>$138</td><td>$25</td></tr>
+        <tr><td class="l">ATR, 0.6 day ranges</td><td>$32,700</td><td>3.3×</td><td>$105</td><td>2%</td><td>$34</td><td>$119</td><td>$50</td></tr>
+      </tbody></table>
+    <p class="note"><b>Note:</b> Leverage is the average position divided by the $10,000 of simulated capital. Bootstrap: 4,000 books of 26 weeks on the main sample. Chronological backtest and forward test: eight books each, as in Table F4; every stay-hedged book finished in profit except one in the backtest at 0.5 day ranges. The last column is a single unhedged account at the same sizing.</p>
+  </div>
+  <p>The ATR rule at 0.42 day ranges, about 4.7 times leverage on average, was the only setting near the top in all three tests, earning $103 per account in the bootstrap, $138 in the chronological backtest and $151 in the forward test, which suggests that holding the daily limit at a steady distance matters more than any particular dollar size. Its bootstrap result is still at the $85 to $100 that random-walk prices give, so the rule recovers the evaluation's full value more reliably but does not raise it. The single-account column moves from $2 to $53 with no pattern, which is the erratic behaviour that makes a stand-alone account a poor guide to sizing.</p>
+  <p>Entry time was only spot-checked, at four hours chosen by hand and not through a systematic search. Opening the stay-hedged pair at 09:00 New York time earned $124 per account in the bootstrap, against $100 at the 20:00 reset, $116 at 02:00 and $93 at 10:00. Random-walk prices have no time of day, so this difference can only come from the sample's intraday pattern, and it has not been tested out of sample, so the reset is kept as the entry. Vest's trading costs of 0.78 bp per forced fill are deducted from the simulated balance and lower profit by about $11 per account on random-walk prices, compared with about $20 of real Hyperliquid costs per account in the main strategy.</p>
 
   <h2>F.5 How Does It Perform in the Backtests and the Forward Test?</h2>
   <p><strong>The stay-hedged pair was profitable in every slot of both chronological tests, but in the forward test its profit is still mostly the value of accounts that have not finished.</strong> Each policy runs a book of two account slots that is refilled whenever an account ends, so all four use the same capital rules and the same prices.</p>
@@ -1987,10 +2012,11 @@ ol.events li{margin:0 0 6px}
   </figure>
 
   <h2>F.6 What Would This Mean in Practice?</h2>
-  <p><strong>Hedging Vest with Vest reaches the full expected value of the evaluation with almost no capital, but it cannot raise that value, and it is prohibited.</strong> The analysis leads to four points:</p>
+  <p><strong>Hedging Vest with Vest reaches the full expected value of the evaluation with almost no capital, but it cannot raise that value, and it is prohibited.</strong> The analysis leads to five points:</p>
   <ul>
     <li><strong>The ceiling is the barrier geometry.</strong> With no directional edge, an evaluation is worth what equation (F1) and Section 2 say it is worth, about $85 to $100 after Vest's costs, and no pairing, entry time or rule for the survivor changes that on random-walk prices.</li>
     <li><strong>The trend idea does not hold up.</strong> A breach did not predict further movement in the same direction (Table F1), so letting the survivor run is a fair bet, not an edge.</li>
+    <li><strong>Size the pair from volatility.</strong> Setting the daily limit at about 0.42 trailing day ranges, roughly $47,000 or 4.7 times leverage on average, kept the pair hedged and was the most consistent setting across the bootstrap, the backtest and the forward test (Table F5).</li>
     <li><strong>The gain is in capital and certainty.</strong> Removing the Hyperliquid leg removes about $20 of costs and about $3,000 of capital per account, and the stay-hedged pair cuts the chance of a losing period from about 40% to about 6%.</li>
     <li><strong>The rules make it unusable.</strong> Vest prohibits opposite positions across its own accounts and has discretion over payouts, so the likely result of running it is refused payouts and closed accounts. The main strategy hedges on Hyperliquid because that keeps the hedge outside Vest.</li>
   </ul>
@@ -2011,7 +2037,7 @@ ol.events li{margin:0 0 6px}
       <tr><td class="w">Pass probabilities</td><td class="l"><code>results/barrier/R10.json</code></td></tr>
       <tr><td class="w">Adverse scenarios</td><td class="l"><code>results/barrier/R13.json</code></td></tr>
       <tr><td class="w">Periods, markets, calibration, overfitting, sensitivity</td><td class="l"><code>results/barrier/R14.json</code></td></tr>
-      <tr><td class="w">Hedging Vest accounts with each other (Appendix F)</td><td class="l"><code>results/barrier/R22_pair.json</code></td></tr>
+      <tr><td class="w">Hedging Vest accounts with each other (Appendix F)</td><td class="l"><code>results/barrier/R22_pair.json</code>, <code>R22b_pair_atr.json</code></td></tr>
       <tr><td class="w">Fees</td><td class="l"><code>barrier/fees.py</code></td></tr>
     </tbody></table></div>
   <h2>Commands</h2>
